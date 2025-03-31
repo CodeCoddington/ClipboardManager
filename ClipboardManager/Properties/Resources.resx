@@ -121,6 +121,9 @@
   <data name="CircleIndicator_Blank" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CircleIndicator_Blank.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="CircleIndicator_FilteredText" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CircleIndicator_FilteredText.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="CircleIndicator_NonText" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CircleIndicator_NonText.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

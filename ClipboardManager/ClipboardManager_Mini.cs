@@ -17,6 +17,7 @@ namespace ClipboardManager
         {
             InitializeComponent();
             InitializeEvents();
+            InitializeGlobalVars();
         }
 
         private void InitializeEvents()
@@ -29,6 +30,22 @@ namespace ClipboardManager
             btn_miniToMedium.Click += Btn_smallToMedium_Click;
             pb_miniToMedium_buttonFace.Click += Pb_smallToMedium_buttonFace_Click;
         }
+
+        private void InitializeGlobalVars()
+        {
+            // Eventually lookup from SQLite
+            GlobalVars.filterList = new List<string>();
+            GlobalVars.filterList.Add("PROMPT:");
+            GlobalVars.filterList.Add("RESPONSE:");
+
+            GlobalVars.lastClipType = GlobalVars.CLIP_TYPE_BLANK;
+            GlobalVars.lastClipText = string.Empty;
+            Clipboard.SetText("HelloWorld!");
+            GlobalVars.currClipText = "HelloWorld!";
+        }
+
+
+
 
         //---FORM LOAD / SHOWN---
         private void ClipboardManager_Mini_Load(object sender, EventArgs e)
@@ -62,11 +79,57 @@ namespace ClipboardManager
             // Start clipboard class
         }
 
-        // Update images based on clipboard
-        private void ShowClipboardUpdate()
+        
+        
+
+        //---UPDATE METHODS---
+        public bool TypeChange(string lastClipType, string currClipType)
+        {
+            return currClipType != lastClipType;
+        }
+
+        public bool TextToTextChange(string lastClipType, string currClipType, string lastClipText, string currClipText)
+        {
+            return lastClipType == GlobalVars.CLIP_TYPE_TEXT && currClipType == GlobalVars.CLIP_TYPE_TEXT && lastClipText != currClipText;
+        }
+
+        public bool NonTextToTextChange(string lastClipType, string currClipType)
+        {
+            return lastClipType == GlobalVars.CLIP_TYPE_NONTEXT && currClipType == GlobalVars.CLIP_TYPE_TEXT;
+        }
+
+        public bool TextToNonTextChange(string lastClipType, string currClipType)
+        {
+            return lastClipType == GlobalVars.CLIP_TYPE_TEXT && currClipType == GlobalVars.CLIP_TYPE_NONTEXT;
+        }
+
+        public bool CurrClipIsEmptyOrEmptyString(string currClipType)
+        {
+            return currClipType == GlobalVars.CLIP_TYPE_BLANK;
+        }
+
+        public bool PassedTextFilter(string lastClipType, string currClipType, string lastClipText, string currClipText)
+        {
+            bool passedTextFilter = true;
+            return ((TextToTextChange(lastClipType, currClipType, lastClipText, currClipText) && currClipText.Contains(GlobalVars.filterList.Any()) || (NonTextToTextChange(lastClipType, currClipType) && currClipText.Contains(GlobalVars.filterList.Any()));
+
+        }
+
+        public async void ChecklipboardUpdate()
+        {
+            bool passedTextFilter = PassedTextFilter();
+            await ShowClipboardUpdate(GlobalVars.clipChanged, passedTextFilter);
+        }
+
+        public async Task ShowClipboardUpdate(bool clipChanged, bool passedTextFilter)
         {
 
         }
+
+        
+
+
+
 
         //---SHOW LARGER FORM---
         private void Pb_smallToMedium_buttonFace_Click(object sender, EventArgs e)

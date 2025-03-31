@@ -81,7 +81,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\CircleIndicator_FilteredText.png" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Resources\MiniToMedium_Arrows.png" />
   </ItemGroup>

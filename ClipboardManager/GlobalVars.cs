@@ -8,14 +8,22 @@ namespace ClipboardManager
 {
     public class GlobalVars
     {
-        public const string CLIPTYPE_BLANK = "BLANK";
-        public const string CLIPTYPE_NONTEXT = "NONTEXT";
-        public const string CLIPTYTPE_TEXT = "TEXT";
+        // list - Eventually look this up from SQL
+        public static List<string> filterList { get; set; }
 
+        // Types
         public static string lastClipType { get; set; }
         public static string currClipType { get; set; }
-
+        public const string CLIP_TYPE_BLANK = "BLANK";
+        public const string CLIP_TYPE_NONTEXT = "NONTEXT";
+        public const string CLIP_TYPE_TEXT = "TEXT";
+        
+        // Text
         public static string lastClipText { get; set; }
         public static string currClipText { get; set; }
+
+        // Changed
+        public static bool typeChanged { get; set; } = false;
+        public static bool clipChanged { get; set; } = false;
     }
 }

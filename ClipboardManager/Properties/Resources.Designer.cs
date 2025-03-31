@@ -73,6 +73,16 @@ namespace ClipboardManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap CircleIndicator_FilteredText {
+            get {
+                object obj = ResourceManager.GetObject("CircleIndicator_FilteredText", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap CircleIndicator_NonText {
             get {
                 object obj = ResourceManager.GetObject("CircleIndicator_NonText", resourceCulture);
