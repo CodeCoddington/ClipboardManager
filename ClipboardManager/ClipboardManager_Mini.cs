@@ -110,20 +110,35 @@ namespace ClipboardManager
 
         public bool PassedTextFilter(string lastClipType, string currClipType, string lastClipText, string currClipText)
         {
-            bool passedTextFilter = true;
-            return ((TextToTextChange(lastClipType, currClipType, lastClipText, currClipText) && currClipText.Contains(GlobalVars.filterList.Any()) || (NonTextToTextChange(lastClipType, currClipType) && currClipText.Contains(GlobalVars.filterList.Any()));
-
+            return ((TextToTextChange(lastClipType, currClipType, lastClipText, currClipText) && GlobalVars.filterList.Any(filter => currClipText.Contains(filter))) || (NonTextToTextChange(lastClipType, currClipType) && GlobalVars.filterList.Any(filter => currClipText.Contains(filter))));
         }
 
-        public async void ChecklipboardUpdate()
+        public async void ChecklipboardUpdate(string lastClipType, string currClipType, string lastClipText, string currClipText)
         {
-            bool passedTextFilter = PassedTextFilter();
-            await ShowClipboardUpdate(GlobalVars.clipChanged, passedTextFilter);
+            bool showClipChanged = TypeChange(lastClipType, currClipType) || TextToTextChange(lastClipType, currClipType, lastClipText, currClipText);
+
+            bool show_pb_clipTypeFilteredText = !PassedTextFilter(lastClipType, currClipType, lastClipText, currClipText);
+
+            bool show_pb_clipTypeBlank = !show_pb_clipTypeFilteredText && currClipType == GlobalVars.CLIP_TYPE_BLANK;
+
+            bool show_pb_clipTypeNonText = !show_pb_clipTypeFilteredText && currClipType == GlobalVars.CLIP_TYPE_NONTEXT;
+
+            bool show_pb_clipTypeText = !show_pb_clipTypeFilteredText && currClipType == GlobalVars.CLIP_TYPE_TEXT;
         }
 
-        public async Task ShowClipboardUpdate(bool clipChanged, bool passedTextFilter)
+        public async Task ShowClipboardUpdate(bool showClipChanged, bool show_pb_clipTypeFilteredText, bool show_pb_clipTypeBlank, bool show_pb_clipTypeNonText, bool show_pb_clipTypeText)
         {
+            pb_clipTypeFilteredText.Visible = show_pb_clipTypeFilteredText;
+            pb_clipTypeBlank.Visible = show_pb_clipTypeBlank;
+            pb_clipTypeNonText.Visible = show_pb_clipTypeNonText;
+            pb_clipTypeText.Visible = show_pb_clipTypeText;
 
+            if (showClipChanged)
+            {
+                pb_clipChangedIndicator.Visible = true;
+                await Task.Delay(1000);
+                pb_clipChangedIndicator.Visible = false;
+            }
         }
 
         

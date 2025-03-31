@@ -155,8 +155,8 @@
             // pb_clipTypeFilteredText
             // 
             this.pb_clipTypeFilteredText.BackColor = System.Drawing.SystemColors.Control;
-            this.pb_clipTypeFilteredText.Image = global::ClipboardManager.Properties.Resources.CircleIndicator_Text;
-            this.pb_clipTypeFilteredText.Location = new System.Drawing.Point(10, 29);
+            this.pb_clipTypeFilteredText.Image = global::ClipboardManager.Properties.Resources.CircleIndicator_FilteredText;
+            this.pb_clipTypeFilteredText.Location = new System.Drawing.Point(10, 84);
             this.pb_clipTypeFilteredText.Name = "pb_clipTypeFilteredText";
             this.pb_clipTypeFilteredText.Size = new System.Drawing.Size(41, 41);
             this.pb_clipTypeFilteredText.TabIndex = 3;
