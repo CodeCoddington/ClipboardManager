@@ -63,9 +63,9 @@ namespace ClipboardManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ControlBox_Only2 {
+        internal static System.Drawing.Bitmap CircleIndicator_Blank {
             get {
-                object obj = ResourceManager.GetObject("ControlBox_Only2", resourceCulture);
+                object obj = ResourceManager.GetObject("CircleIndicator_Blank", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,39 @@ namespace ClipboardManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap GreenCircle_Only {
+        internal static System.Drawing.Bitmap CircleIndicator_NonText {
             get {
-                object obj = ResourceManager.GetObject("GreenCircle_Only", resourceCulture);
+                object obj = ResourceManager.GetObject("CircleIndicator_NonText", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CircleIndicator_Text {
+            get {
+                object obj = ResourceManager.GetObject("CircleIndicator_Text", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ClipChanged_Indicator {
+            get {
+                object obj = ResourceManager.GetObject("ClipChanged_Indicator", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ControlBox_Only2 {
+            get {
+                object obj = ResourceManager.GetObject("ControlBox_Only2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

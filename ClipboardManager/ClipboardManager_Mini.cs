@@ -39,7 +39,14 @@ namespace ClipboardManager
 
         private void InitializeControlProperties()
         {
-            pb_detectSignal.Visible = false;
+            // Initialize indicators to non-visible. Only one should be set to visible at a time.
+            pb_clipChangeBox.Visible = true;
+            pb_clipChangedIndicator.Visible = false;
+
+            pb_clipTypeBox.Visible = true;
+            pb_clipTypeBlank.Visible = false;
+            pb_clipTypeNonText.Visible = false;
+            pb_clipTypeText.Visible = false;
         }
 
         private void SetStartingLocation()
@@ -49,11 +56,16 @@ namespace ClipboardManager
             this.Location = new Point(workingArea.Right - this.Width, workingArea.Bottom - this.Height);
         }
 
-
-
         private async void ClipboardManager_Small_Shown(object sender, EventArgs e)
         {
             await Task.Delay(500);
+            // Start clipboard class
+        }
+
+        // Update images based on clipboard
+        private void ShowClipboardUpdate()
+        {
+
         }
 
         //---SHOW LARGER FORM---
