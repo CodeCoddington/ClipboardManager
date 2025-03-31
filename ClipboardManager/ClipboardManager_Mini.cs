@@ -26,14 +26,15 @@ namespace ClipboardManager
             this.Shown += ClipboardManager_Small_Shown;
 
             // Buttons and related
-            btn_smallToMedium.Click += Btn_smallToMedium_Click;
-            pb_smallToMedium_buttonFace.Click += Pb_smallToMedium_buttonFace_Click;
+            btn_miniToMedium.Click += Btn_smallToMedium_Click;
+            pb_miniToMedium_buttonFace.Click += Pb_smallToMedium_buttonFace_Click;
         }
 
         //---FORM LOAD / SHOWN---
         private void ClipboardManager_Mini_Load(object sender, EventArgs e)
         {
             InitializeControlProperties();
+            SetStartingLocation();
         }
 
         private void InitializeControlProperties()
@@ -41,14 +42,24 @@ namespace ClipboardManager
             pb_detectSignal.Visible = false;
         }
 
+        private void SetStartingLocation()
+        {
+            // Position in bottom-right corner of primary screen
+            Rectangle workingArea = Screen.PrimaryScreen.WorkingArea;
+            this.Location = new Point(workingArea.Right - this.Width, workingArea.Bottom - this.Height);
+        }
+
+
+
         private async void ClipboardManager_Small_Shown(object sender, EventArgs e)
         {
             await Task.Delay(500);
         }
 
+        //---SHOW LARGER FORM---
         private void Pb_smallToMedium_buttonFace_Click(object sender, EventArgs e)
         {
-            btn_smallToMedium.PerformClick();
+            btn_miniToMedium.PerformClick();
         }
 
         private void Btn_smallToMedium_Click(object sender, EventArgs e)

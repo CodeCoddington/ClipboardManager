@@ -30,12 +30,12 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ClipboardManager_Mini));
             this.gb_cmSmall = new System.Windows.Forms.GroupBox();
-            this.pb_smallToMedium_buttonFace = new System.Windows.Forms.PictureBox();
-            this.btn_smallToMedium = new System.Windows.Forms.Button();
+            this.pb_miniToMedium_buttonFace = new System.Windows.Forms.PictureBox();
+            this.btn_miniToMedium = new System.Windows.Forms.Button();
             this.pb_detectSignal = new System.Windows.Forms.PictureBox();
             this.pb_box = new System.Windows.Forms.PictureBox();
             this.gb_cmSmall.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pb_smallToMedium_buttonFace)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_miniToMedium_buttonFace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_detectSignal)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_box)).BeginInit();
             this.SuspendLayout();
@@ -43,8 +43,8 @@
             // gb_cmSmall
             // 
             this.gb_cmSmall.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.gb_cmSmall.Controls.Add(this.pb_smallToMedium_buttonFace);
-            this.gb_cmSmall.Controls.Add(this.btn_smallToMedium);
+            this.gb_cmSmall.Controls.Add(this.pb_miniToMedium_buttonFace);
+            this.gb_cmSmall.Controls.Add(this.btn_miniToMedium);
             this.gb_cmSmall.Controls.Add(this.pb_detectSignal);
             this.gb_cmSmall.Controls.Add(this.pb_box);
             this.gb_cmSmall.Font = new System.Drawing.Font("Calibri", 14F, System.Drawing.FontStyle.Bold);
@@ -56,27 +56,27 @@
             this.gb_cmSmall.TabStop = false;
             this.gb_cmSmall.Text = "Mini";
             // 
-            // pb_smallToMedium_buttonFace
+            // pb_miniToMedium_buttonFace
             // 
-            this.pb_smallToMedium_buttonFace.BackColor = System.Drawing.SystemColors.Control;
-            this.pb_smallToMedium_buttonFace.BackgroundImage = global::ClipboardManager.Properties.Resources.MiniToMedium_Arrows;
-            this.pb_smallToMedium_buttonFace.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pb_smallToMedium_buttonFace.Location = new System.Drawing.Point(16, 85);
-            this.pb_smallToMedium_buttonFace.Name = "pb_smallToMedium_buttonFace";
-            this.pb_smallToMedium_buttonFace.Size = new System.Drawing.Size(28, 37);
-            this.pb_smallToMedium_buttonFace.TabIndex = 2;
-            this.pb_smallToMedium_buttonFace.TabStop = false;
+            this.pb_miniToMedium_buttonFace.BackColor = System.Drawing.SystemColors.Control;
+            this.pb_miniToMedium_buttonFace.BackgroundImage = global::ClipboardManager.Properties.Resources.MiniToMedium_Arrows;
+            this.pb_miniToMedium_buttonFace.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pb_miniToMedium_buttonFace.Location = new System.Drawing.Point(16, 85);
+            this.pb_miniToMedium_buttonFace.Name = "pb_miniToMedium_buttonFace";
+            this.pb_miniToMedium_buttonFace.Size = new System.Drawing.Size(28, 37);
+            this.pb_miniToMedium_buttonFace.TabIndex = 2;
+            this.pb_miniToMedium_buttonFace.TabStop = false;
             // 
-            // btn_smallToMedium
+            // btn_miniToMedium
             // 
-            this.btn_smallToMedium.BackColor = System.Drawing.SystemColors.Control;
-            this.btn_smallToMedium.Font = new System.Drawing.Font("Calibri", 30F, System.Drawing.FontStyle.Bold);
-            this.btn_smallToMedium.ForeColor = System.Drawing.Color.Black;
-            this.btn_smallToMedium.Location = new System.Drawing.Point(4, 77);
-            this.btn_smallToMedium.Name = "btn_smallToMedium";
-            this.btn_smallToMedium.Size = new System.Drawing.Size(53, 53);
-            this.btn_smallToMedium.TabIndex = 1;
-            this.btn_smallToMedium.UseVisualStyleBackColor = false;
+            this.btn_miniToMedium.BackColor = System.Drawing.SystemColors.Control;
+            this.btn_miniToMedium.Font = new System.Drawing.Font("Calibri", 30F, System.Drawing.FontStyle.Bold);
+            this.btn_miniToMedium.ForeColor = System.Drawing.Color.Black;
+            this.btn_miniToMedium.Location = new System.Drawing.Point(4, 77);
+            this.btn_miniToMedium.Name = "btn_miniToMedium";
+            this.btn_miniToMedium.Size = new System.Drawing.Size(53, 53);
+            this.btn_miniToMedium.TabIndex = 1;
+            this.btn_miniToMedium.UseVisualStyleBackColor = false;
             // 
             // pb_detectSignal
             // 
@@ -111,7 +111,7 @@
             this.MinimizeBox = false;
             this.Name = "ClipboardManager_Mini";
             this.gb_cmSmall.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pb_smallToMedium_buttonFace)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_miniToMedium_buttonFace)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_detectSignal)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_box)).EndInit();
             this.ResumeLayout(false);
@@ -123,8 +123,8 @@
         private System.Windows.Forms.GroupBox gb_cmSmall;
         private System.Windows.Forms.PictureBox pb_detectSignal;
         private System.Windows.Forms.PictureBox pb_box;
-        private System.Windows.Forms.Button btn_smallToMedium;
-        private System.Windows.Forms.PictureBox pb_smallToMedium_buttonFace;
+        private System.Windows.Forms.Button btn_miniToMedium;
+        private System.Windows.Forms.PictureBox pb_miniToMedium_buttonFace;
     }
 }
 
