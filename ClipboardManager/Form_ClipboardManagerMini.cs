@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace ClipboardManager
 {
-    public partial class ClipboardManager_mini: Form
+    public partial class ClipboardManager_mini : Form
     {
         //---CONSTRUCTOR---
         public ClipboardManager_mini()
@@ -34,18 +34,10 @@ namespace ClipboardManager
         private void InitializeGlobalVars()
         {
             // Eventually lookup from SQLite
-            GlobalVars.filterList = new List<string>();
-            GlobalVars.filterList.Add("PROMPT:");
-            GlobalVars.filterList.Add("RESPONSE:");
-
+            GlobalVars.filterList = new List<string> { "", "RESPONSE:" };
             GlobalVars.lastClipType = GlobalVars.CLIP_TYPE_NONTEXT;
             GlobalVars.lastClipText = string.Empty;
-            Clipboard.SetText("HelloWorld!");
-            GlobalVars.currClipText = "HelloWorld!";
         }
-
-
-
 
         //---FORM LOAD / SHOWN---
         private void ClipboardManager_Mini_Load(object sender, EventArgs e)
@@ -76,11 +68,13 @@ namespace ClipboardManager
         private async void ClipboardManager_Small_Shown(object sender, EventArgs e)
         {
             await Task.Delay(500);
-            // Start clipboard class
+            StartClipboardMonitor();
         }
 
-        
-        
+        private void StartClipboardMonitor()
+        {
+            ClipboardMonitor clipboardMonitor = new ClipboardMonitor(this);
+        }
 
         //---UPDATE METHODS---
         public bool TypeChange(string lastClipType, string currClipType)
@@ -105,25 +99,23 @@ namespace ClipboardManager
 
         public bool PassedTextFilter(string lastClipType, string currClipType, string lastClipText, string currClipText)
         {
-            return ((TextToTextChange(lastClipType, currClipType, lastClipText, currClipText) && GlobalVars.filterList.Any(filter => currClipText.Contains(filter))) || (NonTextToTextChange(lastClipType, currClipType) && GlobalVars.filterList.Any(filter => currClipText.Contains(filter))));
+            return (TextToTextChange(lastClipType, currClipType, lastClipText, currClipText) || NonTextToTextChange(lastClipType, currClipType))
+                   && GlobalVars.filterList.Any(filter => currClipText.Contains(filter));
         }
 
-        public async void ChecklipboardUpdate(string lastClipType, string currClipType, string lastClipText, string currClipText)
+        public async void CheckClipboardUpdate(string lastClipType, string currClipType, string lastClipText, string currClipText)
         {
             bool showClipChanged = TypeChange(lastClipType, currClipType) || TextToTextChange(lastClipType, currClipType, lastClipText, currClipText);
-
             bool show_pb_clipTypeFilteredText = !PassedTextFilter(lastClipType, currClipType, lastClipText, currClipText);
 
             bool show_pb_clipTypeNonText = !show_pb_clipTypeFilteredText && currClipType == GlobalVars.CLIP_TYPE_NONTEXT;
-
-            bool show_pb_clipTypeBlank = !show_pb_clipTypeFilteredText && currClipType == GlobalVars.CLIP_TYPE_TEXT && currClipText == string.Empty;
-
-            bool show_pb_clipTypeText = !show_pb_clipTypeFilteredText && currClipType == GlobalVars.CLIP_TYPE_TEXT;
+            bool show_pb_clipTypeBlank = !show_pb_clipTypeFilteredText && currClipType == GlobalVars.CLIP_TYPE_TEXT && string.IsNullOrEmpty(currClipText);
+            bool show_pb_clipTypeText = !show_pb_clipTypeFilteredText && currClipType == GlobalVars.CLIP_TYPE_TEXT && !string.IsNullOrEmpty(currClipText);
 
             await ShowClipboardUpdate(showClipChanged, show_pb_clipTypeFilteredText, show_pb_clipTypeBlank, show_pb_clipTypeNonText, show_pb_clipTypeText);
         }
 
-        public async Task ShowClipboardUpdate(bool showClipChanged, bool show_pb_clipTypeFilteredText, bool show_pb_clipTypeBlank, bool show_pb_clipTypeNonText, bool show_pb_clipTypeText)
+        private async Task ShowClipboardUpdate(bool showClipChanged, bool show_pb_clipTypeFilteredText, bool show_pb_clipTypeBlank, bool show_pb_clipTypeNonText, bool show_pb_clipTypeText)
         {
             pb_clipTypeFilteredText.Visible = show_pb_clipTypeFilteredText;
             pb_clipTypeBlank.Visible = show_pb_clipTypeBlank;
@@ -137,11 +129,6 @@ namespace ClipboardManager
                 pb_clipChangedIndicator.Visible = false;
             }
         }
-
-        
-
-
-
 
         //---SHOW LARGER FORM---
         private void Pb_smallToMedium_buttonFace_Click(object sender, EventArgs e)

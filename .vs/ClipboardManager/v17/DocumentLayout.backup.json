@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|g:\\public\\vince j\\programming\\github\\repos\\clipboardmanager\\clipboardmanager\\clipboardmanager\\clipboardmanager_mini.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|solutionrelative:clipboardmanager\\clipboardmanager_mini.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|g:\\public\\vince j\\programming\\github\\repos\\clipboardmanager\\clipboardmanager\\clipboardmanager\\form_clipboardmanagermini.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|solutionrelative:clipboardmanager\\form_clipboardmanagermini.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\clipboardmanager\\clipboardmanager_mini.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|solutionrelative:clipboardmanager\\clipboardmanager_mini.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|g:\\public\\vince j\\programming\\github\\repos\\clipboardmanager\\clipboardmanager\\clipboardmanager\\form_clipboardmanagermini.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|solutionrelative:clipboardmanager\\form_clipboardmanagermini.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|g:\\public\\vince j\\programming\\github\\repos\\clipboardmanager\\clipboardmanager\\clipboardmanager\\globalvars.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -45,12 +45,12 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ClipboardManager_Mini.cs [Design]",
-              "DocumentMoniker": "G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\ClipboardManager\\ClipboardManager_Mini.cs",
-              "RelativeDocumentMoniker": "ClipboardManager\\ClipboardManager_Mini.cs",
-              "ToolTip": "G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\ClipboardManager\\ClipboardManager_Mini.cs [Design]",
-              "RelativeToolTip": "ClipboardManager\\ClipboardManager_Mini.cs [Design]",
+              "DocumentIndex": 0,
+              "Title": "Form_ClipboardManagerMini.cs [Design]",
+              "DocumentMoniker": "G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\ClipboardManager\\Form_ClipboardManagerMini.cs",
+              "RelativeDocumentMoniker": "ClipboardManager\\Form_ClipboardManagerMini.cs",
+              "ToolTip": "G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\ClipboardManager\\Form_ClipboardManagerMini.cs [Design]",
+              "RelativeToolTip": "ClipboardManager\\Form_ClipboardManagerMini.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-31T11:43:10.713Z",
               "EditorCaption": " [Design]"
@@ -94,7 +94,7 @@
               "RelativeDocumentMoniker": "ClipboardManager\\GlobalVars.cs",
               "ToolTip": "G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\ClipboardManager\\GlobalVars.cs",
               "RelativeToolTip": "ClipboardManager\\GlobalVars.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAA0AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAA3AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-31T17:54:14.978Z",
               "IsPinned": true,
@@ -102,13 +102,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "ClipboardManager_Mini.cs",
-              "DocumentMoniker": "G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\ClipboardManager\\ClipboardManager_Mini.cs",
-              "RelativeDocumentMoniker": "ClipboardManager\\ClipboardManager_Mini.cs",
-              "ToolTip": "G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\ClipboardManager\\ClipboardManager_Mini.cs",
-              "RelativeToolTip": "ClipboardManager\\ClipboardManager_Mini.cs",
-              "ViewState": "AgIAAC8AAAAAAAAAAAAQwIsAAAA4AAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "Form_ClipboardManagerMini.cs",
+              "DocumentMoniker": "G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\ClipboardManager\\Form_ClipboardManagerMini.cs",
+              "RelativeDocumentMoniker": "ClipboardManager\\Form_ClipboardManagerMini.cs",
+              "ToolTip": "G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\ClipboardManager\\Form_ClipboardManagerMini.cs",
+              "RelativeToolTip": "ClipboardManager\\Form_ClipboardManagerMini.cs",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAhwHoAAACbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-31T11:49:36.666Z",
               "EditorCaption": ""

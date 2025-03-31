@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClipboardMonitor.cs" />
     <Compile Include="Form_ClipboardManagerMini.cs">
       <SubType>Form</SubType>
     </Compile>
