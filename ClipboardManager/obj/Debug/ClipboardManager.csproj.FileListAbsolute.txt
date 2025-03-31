@@ -1,0 +1,10 @@
+G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\ClipboardManager\bin\Debug\ClipboardManager.exe.config
+G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\ClipboardManager\bin\Debug\ClipboardManager.exe
+G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\ClipboardManager\bin\Debug\ClipboardManager.pdb
+G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\ClipboardManager\obj\Debug\ClipboardManager.csproj.AssemblyReference.cache
+G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\ClipboardManager\obj\Debug\ClipboardManager.Properties.Resources.resources
+G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\ClipboardManager\obj\Debug\ClipboardManager.csproj.GenerateResource.cache
+G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\ClipboardManager\obj\Debug\ClipboardManager.csproj.CoreCompileInputs.cache
+G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\ClipboardManager\obj\Debug\ClipboardManager.exe
+G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\ClipboardManager\obj\Debug\ClipboardManager.pdb
+G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\ClipboardManager\obj\Debug\ClipboardManager.ClipboardManager_Mini.resources
