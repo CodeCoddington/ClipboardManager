@@ -16,7 +16,7 @@ namespace ClipboardManager
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ClipboardManager_Mini());
+            Application.Run(new ClipboardManager_mini());
         }
     }
 }

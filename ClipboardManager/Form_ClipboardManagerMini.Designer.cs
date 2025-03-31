@@ -1,6 +1,6 @@
 ﻿namespace ClipboardManager
 {
-    partial class ClipboardManager_Mini
+    partial class ClipboardManager_mini
     {
         /// <summary>
         /// Required designer variable.
@@ -162,7 +162,7 @@
             this.pb_clipTypeFilteredText.TabIndex = 3;
             this.pb_clipTypeFilteredText.TabStop = false;
             // 
-            // ClipboardManager_Mini
+            // ClipboardManager_mini
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -172,7 +172,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "ClipboardManager_Mini";
+            this.Name = "ClipboardManager_mini";
             this.gb_cmSmall.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeText)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeNonText)).EndInit();

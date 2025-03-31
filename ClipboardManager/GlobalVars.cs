@@ -14,7 +14,6 @@ namespace ClipboardManager
         // Types
         public static string lastClipType { get; set; }
         public static string currClipType { get; set; }
-        public const string CLIP_TYPE_BLANK = "BLANK";
         public const string CLIP_TYPE_NONTEXT = "NONTEXT";
         public const string CLIP_TYPE_TEXT = "TEXT";
         

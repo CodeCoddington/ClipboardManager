@@ -46,17 +46,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClipboardManager_Mini.cs">
+    <Compile Include="Form_ClipboardManagerMini.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ClipboardManager_Mini.Designer.cs">
-      <DependentUpon>ClipboardManager_Mini.cs</DependentUpon>
+    <Compile Include="Form_ClipboardManagerMini.Designer.cs">
+      <DependentUpon>Form_ClipboardManagerMini.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalVars.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ClipboardManager_Mini.resx">
-      <DependentUpon>ClipboardManager_Mini.cs</DependentUpon>
+    <EmbeddedResource Include="Form_ClipboardManagerMini.resx">
+      <DependentUpon>Form_ClipboardManagerMini.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
