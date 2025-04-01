@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Serialization.Formatters;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,6 +13,31 @@ namespace ClipboardManager
 {
     public partial class ClipboardManager_mini : Form
     {
+        //---CLASS VARS---
+        // Clip Types
+        private string lastClipType = null;
+        private string currClipType = null;
+        private const string CLIP_TYPE_NONTEXT = "CLIP_TYPE_NONTEXT";
+        private const string CLIP_TYPE_TEXT = "CLIP_TYPE_TEXT";
+
+        // Text
+        private string lastClipText;
+        private string currClipText;
+
+        // Bools
+        private bool clipChanged = false;
+        private bool passedFilterTest = false;
+        private bool clipIsNullOrBlank = false;
+
+        // Change Types
+        private string clipChangeType = string.Empty;
+        private const string CHANGE_TYPE_TEXT_TEXT = "CHANGE_TYPE_TEXT_TEXT";
+        private const string CHANGE_TYPE_NONTEXT_TEXT = "CHANGE_TYPE_NONTEXT_TEXT";
+        private const string CHANGE_TYPE_TEXT_NONTEXT = "CHANGE_TYPE_TEXT_NONTEXT";
+
+        // Filter
+        private List<string> filterList = new List<string> { "PROMPT:", "RESPONSE:" };
+
         //---CONSTRUCTOR---
         public ClipboardManager_mini()
         {
@@ -34,9 +60,8 @@ namespace ClipboardManager
         private void InitializeGlobalVars()
         {
             // Eventually lookup from SQLite
-            GlobalVars.filterList = new List<string> { "", "RESPONSE:" };
-            GlobalVars.lastClipType = GlobalVars.CLIP_TYPE_NONTEXT;
-            GlobalVars.lastClipText = string.Empty;
+            lastClipType = CLIP_TYPE_NONTEXT;
+            lastClipText = string.Empty;
         }
 
         //---FORM LOAD / SHOWN---
@@ -71,63 +96,117 @@ namespace ClipboardManager
             StartClipboardMonitor();
         }
 
-        private void StartClipboardMonitor()
+        //---MAIN LOOP---
+        private async void StartClipboardMonitor()
         {
-            ClipboardMonitor clipboardMonitor = new ClipboardMonitor(this);
+            await MonitorClipboard();
         }
 
-        //---UPDATE METHODS---
-        public bool TypeChange(string lastClipType, string currClipType)
+        private async Task MonitorClipboard()
         {
-            return currClipType != lastClipType;
-        }
-
-        public bool TextToTextChange(string lastClipType, string currClipType, string lastClipText, string currClipText)
-        {
-            return lastClipType == GlobalVars.CLIP_TYPE_TEXT && currClipType == GlobalVars.CLIP_TYPE_TEXT && lastClipText != currClipText;
-        }
-
-        public bool NonTextToTextChange(string lastClipType, string currClipType)
-        {
-            return lastClipType == GlobalVars.CLIP_TYPE_NONTEXT && currClipType == GlobalVars.CLIP_TYPE_TEXT;
-        }
-
-        public bool TextToNonTextChange(string lastClipType, string currClipType)
-        {
-            return lastClipType == GlobalVars.CLIP_TYPE_TEXT && currClipType == GlobalVars.CLIP_TYPE_NONTEXT;
-        }
-
-        public bool PassedTextFilter(string lastClipType, string currClipType, string lastClipText, string currClipText)
-        {
-            return (TextToTextChange(lastClipType, currClipType, lastClipText, currClipText) || NonTextToTextChange(lastClipType, currClipType))
-                   && GlobalVars.filterList.Any(filter => currClipText.Contains(filter));
-        }
-
-        public async void CheckClipboardUpdate(string lastClipType, string currClipType, string lastClipText, string currClipText)
-        {
-            bool showClipChanged = TypeChange(lastClipType, currClipType) || TextToTextChange(lastClipType, currClipType, lastClipText, currClipText);
-            bool show_pb_clipTypeFilteredText = !PassedTextFilter(lastClipType, currClipType, lastClipText, currClipText);
-
-            bool show_pb_clipTypeNonText = !show_pb_clipTypeFilteredText && currClipType == GlobalVars.CLIP_TYPE_NONTEXT;
-            bool show_pb_clipTypeBlank = !show_pb_clipTypeFilteredText && currClipType == GlobalVars.CLIP_TYPE_TEXT && string.IsNullOrEmpty(currClipText);
-            bool show_pb_clipTypeText = !show_pb_clipTypeFilteredText && currClipType == GlobalVars.CLIP_TYPE_TEXT && !string.IsNullOrEmpty(currClipText);
-
-            await ShowClipboardUpdate(showClipChanged, show_pb_clipTypeFilteredText, show_pb_clipTypeBlank, show_pb_clipTypeNonText, show_pb_clipTypeText);
-        }
-
-        private async Task ShowClipboardUpdate(bool showClipChanged, bool show_pb_clipTypeFilteredText, bool show_pb_clipTypeBlank, bool show_pb_clipTypeNonText, bool show_pb_clipTypeText)
-        {
-            pb_clipTypeFilteredText.Visible = show_pb_clipTypeFilteredText;
-            pb_clipTypeBlank.Visible = show_pb_clipTypeBlank;
-            pb_clipTypeNonText.Visible = show_pb_clipTypeNonText;
-            pb_clipTypeText.Visible = show_pb_clipTypeText;
-
-            if (showClipChanged)
+            while (true)
             {
-                pb_clipChangedIndicator.Visible = true;
-                await Task.Delay(1000);
-                pb_clipChangedIndicator.Visible = false;
+                await Task.Delay(250);
+
+                // Determine the current clipboard content type and text
+                ReadClipContents();
+
+                // Check if the clipboard content has changed
+                CheckClipChange();
+
+                // Filter test (only tests if currClipType is text and currClipText is not null or blank)
+                RunFilterTest();
+
+                // Perform actions based on results
+                ActionOnResults();
+
+                // Update vars for next check
+                UpdateVarsForNextCheck();
             }
+        }
+
+        private void ReadClipContents()
+        {
+            if (Clipboard.ContainsText())
+            {
+                currClipType = CLIP_TYPE_TEXT;
+                currClipText = Clipboard.GetText();
+                if (currClipText == string.Empty)
+                {
+                    clipIsNullOrBlank = true;
+                }
+            }
+            else if (Clipboard.GetDataObject() != null)
+            {
+                currClipType = CLIP_TYPE_NONTEXT;
+                currClipText = null;
+                clipIsNullOrBlank = false;
+            }
+            else
+            {
+                currClipType = CLIP_TYPE_TEXT;
+                currClipText = string.Empty;
+                clipIsNullOrBlank = true;
+            }
+        }
+
+        private void CheckClipChange()
+        {
+            clipChanged = true;
+            if (lastClipType == CLIP_TYPE_NONTEXT && currClipType == CLIP_TYPE_TEXT)
+            {
+                clipChangeType = CHANGE_TYPE_NONTEXT_TEXT;
+            }
+            else if (lastClipType == CLIP_TYPE_TEXT && currClipType == CLIP_TYPE_TEXT && lastClipText != currClipText)
+            {
+                clipChangeType = CHANGE_TYPE_TEXT_TEXT;
+            }
+            else if (lastClipType == CLIP_TYPE_TEXT && currClipType == CLIP_TYPE_NONTEXT)
+            {
+                clipChangeType = CHANGE_TYPE_TEXT_NONTEXT;
+            }
+            else
+            {
+                clipChanged = false;
+            }
+        }
+
+        private void RunFilterTest()
+        {
+            passedFilterTest = true;
+            if (currClipType == CLIP_TYPE_TEXT && !clipIsNullOrBlank)
+            {
+                if (filterList.Any(filter => currClipText.Contains(filter)))
+                {
+                    passedFilterTest = false;
+                }
+            }
+        }
+
+        private void ActionOnResults()
+        {
+            if (clipChanged)
+            {
+                Console.WriteLine($"Clip Changed = {clipChanged}");
+                Console.WriteLine($"Change Type = {clipChangeType}");
+                Console.WriteLine($"Filter Result = {passedFilterTest}");
+                Console.WriteLine();
+                Console.WriteLine($"Toggle Green = {clipChanged}");
+                Console.WriteLine($"Show Red = {!passedFilterTest}");
+                Console.WriteLine($"Show Blank = {clipIsNullOrBlank}");
+                Console.WriteLine($"Show Boat = {currClipType == CLIP_TYPE_NONTEXT}");
+                Console.WriteLine($"Show Text = {currClipType == CLIP_TYPE_TEXT && passedFilterTest}");
+            }
+        }
+
+        private void UpdateVarsForNextCheck()
+        {
+            lastClipType = currClipType;
+            lastClipText = currClipText;
+            clipChanged = false;
+            passedFilterTest = false;
+            clipIsNullOrBlank = false;
+            clipChangeType = null;
         }
 
         //---SHOW LARGER FORM---

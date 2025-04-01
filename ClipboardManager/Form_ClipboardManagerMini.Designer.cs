@@ -29,16 +29,17 @@
         private void InitializeComponent()
         {
             this.gb_cmSmall = new System.Windows.Forms.GroupBox();
-            this.btn_miniToMedium = new System.Windows.Forms.Button();
+            this.pb_clipTypeFilteredText = new System.Windows.Forms.PictureBox();
             this.pb_clipTypeText = new System.Windows.Forms.PictureBox();
             this.pb_clipTypeNonText = new System.Windows.Forms.PictureBox();
             this.pb_clipTypeBlank = new System.Windows.Forms.PictureBox();
             this.pb_clipChangedIndicator = new System.Windows.Forms.PictureBox();
             this.pb_miniToMedium_buttonFace = new System.Windows.Forms.PictureBox();
+            this.btn_miniToMedium = new System.Windows.Forms.Button();
             this.pb_clipTypeBox = new System.Windows.Forms.PictureBox();
             this.pb_clipChangeBox = new System.Windows.Forms.PictureBox();
-            this.pb_clipTypeFilteredText = new System.Windows.Forms.PictureBox();
             this.gb_cmSmall.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeFilteredText)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeText)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeNonText)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeBlank)).BeginInit();
@@ -46,7 +47,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pb_miniToMedium_buttonFace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipChangeBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeFilteredText)).BeginInit();
             this.SuspendLayout();
             // 
             // gb_cmSmall
@@ -70,16 +70,15 @@
             this.gb_cmSmall.TabStop = false;
             this.gb_cmSmall.Text = "Mini";
             // 
-            // btn_miniToMedium
+            // pb_clipTypeFilteredText
             // 
-            this.btn_miniToMedium.BackColor = System.Drawing.SystemColors.Control;
-            this.btn_miniToMedium.Font = new System.Drawing.Font("Calibri", 30F, System.Drawing.FontStyle.Bold);
-            this.btn_miniToMedium.ForeColor = System.Drawing.Color.Black;
-            this.btn_miniToMedium.Location = new System.Drawing.Point(4, 133);
-            this.btn_miniToMedium.Name = "btn_miniToMedium";
-            this.btn_miniToMedium.Size = new System.Drawing.Size(53, 53);
-            this.btn_miniToMedium.TabIndex = 1;
-            this.btn_miniToMedium.UseVisualStyleBackColor = false;
+            this.pb_clipTypeFilteredText.BackColor = System.Drawing.SystemColors.Control;
+            this.pb_clipTypeFilteredText.Image = global::ClipboardManager.Properties.Resources.CircleIndicator_FilteredText;
+            this.pb_clipTypeFilteredText.Location = new System.Drawing.Point(10, 84);
+            this.pb_clipTypeFilteredText.Name = "pb_clipTypeFilteredText";
+            this.pb_clipTypeFilteredText.Size = new System.Drawing.Size(41, 41);
+            this.pb_clipTypeFilteredText.TabIndex = 3;
+            this.pb_clipTypeFilteredText.TabStop = false;
             // 
             // pb_clipTypeText
             // 
@@ -132,6 +131,17 @@
             this.pb_miniToMedium_buttonFace.TabIndex = 2;
             this.pb_miniToMedium_buttonFace.TabStop = false;
             // 
+            // btn_miniToMedium
+            // 
+            this.btn_miniToMedium.BackColor = System.Drawing.SystemColors.Control;
+            this.btn_miniToMedium.Font = new System.Drawing.Font("Calibri", 30F, System.Drawing.FontStyle.Bold);
+            this.btn_miniToMedium.ForeColor = System.Drawing.Color.Black;
+            this.btn_miniToMedium.Location = new System.Drawing.Point(4, 133);
+            this.btn_miniToMedium.Name = "btn_miniToMedium";
+            this.btn_miniToMedium.Size = new System.Drawing.Size(53, 53);
+            this.btn_miniToMedium.TabIndex = 1;
+            this.btn_miniToMedium.UseVisualStyleBackColor = false;
+            // 
             // pb_clipTypeBox
             // 
             this.pb_clipTypeBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
@@ -152,16 +162,6 @@
             this.pb_clipChangeBox.TabIndex = 0;
             this.pb_clipChangeBox.TabStop = false;
             // 
-            // pb_clipTypeFilteredText
-            // 
-            this.pb_clipTypeFilteredText.BackColor = System.Drawing.SystemColors.Control;
-            this.pb_clipTypeFilteredText.Image = global::ClipboardManager.Properties.Resources.CircleIndicator_FilteredText;
-            this.pb_clipTypeFilteredText.Location = new System.Drawing.Point(10, 84);
-            this.pb_clipTypeFilteredText.Name = "pb_clipTypeFilteredText";
-            this.pb_clipTypeFilteredText.Size = new System.Drawing.Size(41, 41);
-            this.pb_clipTypeFilteredText.TabIndex = 3;
-            this.pb_clipTypeFilteredText.TabStop = false;
-            // 
             // ClipboardManager_mini
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -171,9 +171,12 @@
             this.Controls.Add(this.gb_cmSmall);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(77, 228);
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(77, 228);
             this.Name = "ClipboardManager_mini";
             this.gb_cmSmall.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeFilteredText)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeText)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeNonText)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeBlank)).EndInit();
@@ -181,7 +184,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pb_miniToMedium_buttonFace)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipChangeBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeFilteredText)).EndInit();
             this.ResumeLayout(false);
 
         }
