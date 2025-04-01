@@ -29,14 +29,14 @@ namespace ClipboardManager
         private bool passedFilterTest = false;
         private bool clipIsNullOrBlank = false;
 
-        // Change Types
-        private string clipChangeType = string.Empty;
-        private const string CHANGE_TYPE_TEXT_TEXT = "CHANGE_TYPE_TEXT_TEXT";
-        private const string CHANGE_TYPE_NONTEXT_TEXT = "CHANGE_TYPE_NONTEXT_TEXT";
-        private const string CHANGE_TYPE_TEXT_NONTEXT = "CHANGE_TYPE_TEXT_NONTEXT";
-
-        // Filter
+        // Filter list - Get from SQL
         private List<string> filterList = new List<string> { "PROMPT:", "RESPONSE:" };
+
+        // Indicator list
+        private List<Control> typeIndicators = new List<Control>();
+
+        // Form sizes - will add more as we continue design.
+        private Size formSizeMini = new Size(77, 228);
 
         //---CONSTRUCTOR---
         public ClipboardManager_mini()
@@ -68,6 +68,7 @@ namespace ClipboardManager
         private void ClipboardManager_Mini_Load(object sender, EventArgs e)
         {
             InitializeControlProperties();
+            SetFormSize(formSizeMini); // Mini
             SetStartingLocation();
         }
 
@@ -81,6 +82,19 @@ namespace ClipboardManager
             pb_clipTypeBlank.Visible = false;
             pb_clipTypeNonText.Visible = false;
             pb_clipTypeText.Visible = false;
+
+            // Add to list
+            typeIndicators.Add(pb_clipTypeText);
+            typeIndicators.Add(pb_clipTypeFilteredText);
+            typeIndicators.Add(pb_clipTypeBlank);
+            typeIndicators.Add(pb_clipTypeNonText);
+        }
+
+        private void SetFormSize(Size size)
+        {
+            this.MinimumSize = size;
+            this.Size = size;
+            this.MaximumSize = size;
         }
 
         private void SetStartingLocation()
@@ -130,7 +144,7 @@ namespace ClipboardManager
             if (Clipboard.ContainsText())
             {
                 currClipType = CLIP_TYPE_TEXT;
-                currClipText = Clipboard.GetText();
+                currClipText = Clipboard.GetText().TrimEnd(new char[] { '\r', '\n' });
                 if (currClipText == string.Empty)
                 {
                     clipIsNullOrBlank = true;
@@ -152,23 +166,7 @@ namespace ClipboardManager
 
         private void CheckClipChange()
         {
-            clipChanged = true;
-            if (lastClipType == CLIP_TYPE_NONTEXT && currClipType == CLIP_TYPE_TEXT)
-            {
-                clipChangeType = CHANGE_TYPE_NONTEXT_TEXT;
-            }
-            else if (lastClipType == CLIP_TYPE_TEXT && currClipType == CLIP_TYPE_TEXT && lastClipText != currClipText)
-            {
-                clipChangeType = CHANGE_TYPE_TEXT_TEXT;
-            }
-            else if (lastClipType == CLIP_TYPE_TEXT && currClipType == CLIP_TYPE_NONTEXT)
-            {
-                clipChangeType = CHANGE_TYPE_TEXT_NONTEXT;
-            }
-            else
-            {
-                clipChanged = false;
-            }
+            clipChanged = currClipType != lastClipType || currClipText != lastClipText;
         }
 
         private void RunFilterTest()
@@ -183,19 +181,36 @@ namespace ClipboardManager
             }
         }
 
-        private void ActionOnResults()
+        private async void ActionOnResults()
         {
             if (clipChanged)
             {
-                Console.WriteLine($"Clip Changed = {clipChanged}");
-                Console.WriteLine($"Change Type = {clipChangeType}");
-                Console.WriteLine($"Filter Result = {passedFilterTest}");
-                Console.WriteLine();
-                Console.WriteLine($"Toggle Green = {clipChanged}");
-                Console.WriteLine($"Show Red = {!passedFilterTest}");
-                Console.WriteLine($"Show Blank = {clipIsNullOrBlank}");
-                Console.WriteLine($"Show Boat = {currClipType == CLIP_TYPE_NONTEXT}");
-                Console.WriteLine($"Show Text = {currClipType == CLIP_TYPE_TEXT && passedFilterTest}");
+                // Set the correct indicator to show and then call method to show it.
+                Control indicator;
+                if (clipIsNullOrBlank)
+                {
+                    indicator = pb_clipTypeBlank; // Show type = Blank (White)
+                }
+                else if (!passedFilterTest)
+                {
+                    indicator = pb_clipTypeFilteredText; // Show type = Filtered (Red)
+                }
+                else if (currClipType == CLIP_TYPE_TEXT)
+                {
+                    indicator = pb_clipTypeText; // Show type = Text (Grey with text)
+                }
+                else if (currClipType == CLIP_TYPE_NONTEXT)
+                {
+                    indicator = pb_clipTypeNonText; // Show type = NonText (Blue with boat)
+                }
+                else
+                {
+                    indicator = pb_clipTypeBox;
+                }
+                ShowClipTypeIndicator((PictureBox)indicator);
+
+                // Toggle green clip indicator to show that clipboard has changed
+                await Toggle_pb_clipChangedIndicator();
             }
         }
 
@@ -206,10 +221,25 @@ namespace ClipboardManager
             clipChanged = false;
             passedFilterTest = false;
             clipIsNullOrBlank = false;
-            clipChangeType = null;
         }
 
-        //---SHOW LARGER FORM---
+        //---ACTION METHODS---
+        private void ShowClipTypeIndicator(PictureBox indicator)
+        {
+            foreach (PictureBox pictureBox in typeIndicators)
+            {
+                pictureBox.Visible = pictureBox == indicator;
+            }
+        }
+
+        private async Task Toggle_pb_clipChangedIndicator()
+        {
+            pb_clipChangedIndicator.Visible = true;
+            await Task.Delay(500);
+            pb_clipChangedIndicator.Visible = false;
+        }
+
+        //---ENLARGE FORM---
         private void Pb_smallToMedium_buttonFace_Click(object sender, EventArgs e)
         {
             btn_miniToMedium.PerformClick();
