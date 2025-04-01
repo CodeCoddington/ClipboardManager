@@ -61,14 +61,14 @@
             this.gb_clipIndicator.Controls.Add(this.btn_miniToMedium);
             this.gb_clipIndicator.Controls.Add(this.pb_clipTypeBox);
             this.gb_clipIndicator.Controls.Add(this.pb_clipChangeBox);
-            this.gb_clipIndicator.Font = new System.Drawing.Font("Calibri", 14F, System.Drawing.FontStyle.Bold);
+            this.gb_clipIndicator.Font = new System.Drawing.Font("Calibri", 13F, System.Drawing.FontStyle.Bold);
             this.gb_clipIndicator.ForeColor = System.Drawing.Color.White;
             this.gb_clipIndicator.Location = new System.Drawing.Point(0, 0);
             this.gb_clipIndicator.Name = "gb_clipIndicator";
             this.gb_clipIndicator.Size = new System.Drawing.Size(61, 190);
             this.gb_clipIndicator.TabIndex = 0;
             this.gb_clipIndicator.TabStop = false;
-            this.gb_clipIndicator.Text = "Mini";
+            this.gb_clipIndicator.Text = "Ind";
             // 
             // pb_clipTypeFilteredText
             // 
@@ -167,11 +167,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(61, 189);
+            this.ClientSize = new System.Drawing.Size(784, 411);
             this.Controls.Add(this.gb_clipIndicator);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(77, 228);
+            this.MaximumSize = new System.Drawing.Size(1920, 1080);
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(77, 228);
             this.Name = "ClipboardManager_mini";

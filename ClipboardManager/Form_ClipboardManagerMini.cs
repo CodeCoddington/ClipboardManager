@@ -247,7 +247,7 @@ namespace ClipboardManager
 
         private void Btn_smallToMedium_Click(object sender, EventArgs e)
         {
-            // Will launch a larger form with more features.
+            // Will grow the form to a larger size with more features.
             throw new NotImplementedException();
         }
     }

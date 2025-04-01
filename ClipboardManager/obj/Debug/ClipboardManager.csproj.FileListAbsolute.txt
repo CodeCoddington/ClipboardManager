@@ -8,3 +8,7 @@ G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\Cli
 G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\ClipboardManager\obj\Debug\ClipboardManager.exe
 G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\ClipboardManager\obj\Debug\ClipboardManager.pdb
 G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\ClipboardManager\obj\Debug\ClipboardManager.ClipboardManager_Mini.resources
+G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\ClipboardManager\bin\Debug\ClipboardManager.exe.manifest
+G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\ClipboardManager\bin\Debug\ClipboardManager.application
+G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\ClipboardManager\obj\Debug\ClipboardManager.exe.manifest
+G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\ClipboardManager\obj\Debug\ClipboardManager.application
