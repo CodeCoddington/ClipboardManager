@@ -35,7 +35,7 @@ namespace ClipboardManager
         private void InitializeGlobalVars()
         {
             // Sets lastClipType and lastClipText global vars based on SQLite data
-            GetPreviousClipData();
+            InitializeLastClipGlobals();
 
             // Populates filter list from SQL
             PopulateFilterList();

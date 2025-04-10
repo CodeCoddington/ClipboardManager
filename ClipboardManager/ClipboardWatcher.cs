@@ -100,9 +100,19 @@ namespace ClipboardManager
                 else if (currClipType == CLIP_TYPE_TEXT)
                 {
                     indicator = pb_clipTypeText; // Show type = Text (Grey with text)
-                    
+
                     // Check SQL to see if clipText already exists in the database.
+                    int alreadyExistingId = ReturnId_IfTextFound(currClipText);
+                    
                     // If so change the clipOrder so that that entry moves back up to the top
+                    if (alreadyExistingId > -1)
+                    {
+                        string reorderResult = ReorderClipLog(alreadyExistingId);
+                        if (reorderResult != "0")
+                        {
+
+                        }
+                    }
                 }
                 else
                 {

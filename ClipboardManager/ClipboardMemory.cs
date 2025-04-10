@@ -31,7 +31,7 @@ namespace ClipboardManager
         private List<string> filterList = new List<string>();
 
         // Methods for setting lastClipType and lastClipText global vars
-        private void GetPreviousClipData()
+        private void InitializeLastClipGlobals()
         {
             int clipLogRowCount = GetClipLogRowCount();
             if (clipLogRowCount == 0)
@@ -41,7 +41,7 @@ namespace ClipboardManager
             }
             else
             {
-                SetPreviousClipData_FromSql();
+                SetLastClipGlobals();
             }
         }
 
@@ -61,7 +61,7 @@ namespace ClipboardManager
             }
         }
 
-        private void SetPreviousClipData_FromSql()
+        private void SetLastClipGlobals()
         {
             using (SQLiteConnection conn = new SQLiteConnection(connString))
             {
@@ -82,7 +82,7 @@ namespace ClipboardManager
             }
         }
 
-        // Method for populating filter llist.
+        // Method for populating filter list.
         private void PopulateFilterList()
         {
             filterList.Clear();
