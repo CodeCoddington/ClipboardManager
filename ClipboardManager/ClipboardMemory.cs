@@ -38,10 +38,25 @@ namespace ClipboardManager
             {
                 lastClipType = CLIP_TYPE_NONTEXT;
                 lastClipText = string.Empty;
+                return;
             }
-            else
+
+            using (SQLiteConnection conn = new SQLiteConnection(connString))
             {
-                SetLastClipGlobals();
+                conn.Open();
+
+                string query = $"SELECT {ClipType}, {ClipText} FROM {ClipLog} WHERE {ClipOrder} = 0";
+                using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
+                {
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            lastClipType = reader[$"{ClipType}"].ToString();
+                            lastClipText = reader[$"{ClipText}"].ToString();
+                        }
+                    }
+                }
             }
         }
 
@@ -61,26 +76,6 @@ namespace ClipboardManager
             }
         }
 
-        private void SetLastClipGlobals()
-        {
-            using (SQLiteConnection conn = new SQLiteConnection(connString))
-            {
-                conn.Open();
-
-                string query = $"SELECT {ClipType}, {ClipText} FROM {ClipLog} WHERE {ClipOrder} = 0";
-                using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
-                {
-                    using (SQLiteDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            lastClipType = reader[$"{ClipType}"].ToString();
-                            lastClipText = reader[$"{ClipText}"].ToString();
-                        }
-                    }
-                }
-            }
-        }
 
         // Method for populating filter list.
         private void PopulateFilterList()
@@ -108,27 +103,88 @@ namespace ClipboardManager
         }
 
         // Check SQL to see if clipText already exists in the database.
-        private int ReturnId_IfTextFound(string text)
+        private int ReturnClipOrder_IfTextFound(string text)
         {
-            int rowId;
+            int rowClipOrder;
 
             using (SQLiteConnection conn = new SQLiteConnection(connString))
             {
                 conn.Open();
 
-                string query = $"SELECT Id FROM ClipLog WHERE ClipText = @Text";
+                string query = $"SELECT {ClipOrder} FROM ClipLog WHERE ClipText = @Text";
 
                 using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@Text", text);
                     object result = cmd.ExecuteScalar();
 
-                    rowId = result != null && int.TryParse(result.ToString(), out int id) ? id : -1;
+                    rowClipOrder = result != null && int.TryParse(result.ToString(), out int clipOrder) ? clipOrder : -1;
                 }
             }
-            return rowId; // Should return Id if the text exists and -1 if the text does not.
+            return rowClipOrder; // Should return ClipOrder if the text exists and -1 if the text does not.
         }
 
         // If so change the clipOrder so that that entry moves back up to the top
+        private string ReorderClipLog(int originalClipOrder)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connString))
+            {
+                conn.Open();
+
+                using (SQLiteTransaction transaction = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // Step 1: If the ClipOrder is already 0, no reordering is needed
+                        if (originalClipOrder == 0)
+                        {
+                            transaction.Rollback(); // Exit the transaction early
+                            return "0"; // Zero indicates success
+                        }
+
+                        // Step 2: Temporarily set the ClipOrder of the found text to -1
+                        string setTemporaryOrderQuery = "UPDATE ClipLog SET ClipOrder = -1 WHERE ClipOrder = @ClipOrder";
+                        using (SQLiteCommand tempUpdateCmd = new SQLiteCommand(setTemporaryOrderQuery, conn, transaction))
+                        {
+                            tempUpdateCmd.Parameters.AddWithValue("@ClipOrder", originalClipOrder);
+                            tempUpdateCmd.ExecuteNonQuery();
+                        }
+
+                        // Step 3: Increment the ClipOrder of all records from 0 to (originalClipOrder - 1)
+                        string incrementOrderQuery = @"
+                        UPDATE ClipLog
+                        SET ClipOrder = ClipOrder + 1
+                        WHERE ClipOrder >= 0 AND ClipOrder < @OriginalClipOrder";
+                        using (SQLiteCommand incrementCmd = new SQLiteCommand(incrementOrderQuery, conn, transaction))
+                        {
+                            incrementCmd.Parameters.AddWithValue("@OriginalClipOrder", originalClipOrder);
+                            incrementCmd.ExecuteNonQuery();
+                        }
+
+                        // Step 4: Update the ClipOrder of the found text to 0
+                        string setFinalOrderQuery = "UPDATE ClipLog SET ClipOrder = 0 WHERE ClipOrder = -1";
+                        using (SQLiteCommand finalUpdateCmd = new SQLiteCommand(setFinalOrderQuery, conn, transaction))
+                        {
+                            finalUpdateCmd.ExecuteNonQuery();
+                        }
+
+                        // Commit the transaction
+                        transaction.Commit();
+
+                        // Return
+                        return "0"; // Zero indicates success
+                    }
+                    catch (Exception ex)
+                    {
+                        // Roll back the transaction if any error occurs
+                        transaction.Rollback();
+                        return (ex.Message);
+                    }
+                }
+            }
+        }
+
+
+
     }
 }

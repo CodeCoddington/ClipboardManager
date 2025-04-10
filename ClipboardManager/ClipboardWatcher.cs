@@ -102,16 +102,27 @@ namespace ClipboardManager
                     indicator = pb_clipTypeText; // Show type = Text (Grey with text)
 
                     // Check SQL to see if clipText already exists in the database.
-                    int alreadyExistingId = ReturnId_IfTextFound(currClipText);
+                    int alreadyExistingClipOrder = ReturnClipOrder_IfTextFound(currClipText);
                     
-                    // If so change the clipOrder so that that entry moves back up to the top
-                    if (alreadyExistingId > -1)
+                    // If we found the text,
+                    if (alreadyExistingClipOrder > -1)
                     {
-                        string reorderResult = ReorderClipLog(alreadyExistingId);
-                        if (reorderResult != "0")
+                        // And if the clipOrder of the text is not already at zero (top of list),
+                        if (alreadyExistingClipOrder > 0)
                         {
-
+                            // Attempt to reorder
+                            string reorderResult = ReorderClipLog(alreadyExistingClipOrder);
+                            if (reorderResult != "0")
+                            {
+                                MessageBox.Show($"Reordering ClipLog failed with the following exception:\r\n\r\n" +
+                                    $"'{reorderResult}'");
+                            }
                         }
+                    }
+                    // If we did NOT find the text,
+                    else
+                    {
+
                     }
                 }
                 else
