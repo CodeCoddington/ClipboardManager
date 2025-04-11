@@ -19,14 +19,7 @@ namespace ClipboardManager
         private static readonly string FilteredStrings = "FilteredStrings";
         private static readonly string String = "String";
 
-        // ClipLog Table
-        private static readonly string ClipLog = "ClipLog";
-        private static readonly string Id = "Id";
-        private static readonly string OriginalTimestamp = "OriginalTimestamp";
-        private static readonly string LatestChangeTimestamp = "LatestChangeTimestamp";
-        private static readonly string ClipOrder = "ClipOrder";
-        private static readonly string ClipType = "ClipType";
-        private static readonly string ClipText = "ClipText";
+        
 
         private List<string> filterList = new List<string>();
 
@@ -45,15 +38,15 @@ namespace ClipboardManager
             {
                 conn.Open();
 
-                string query = $"SELECT {ClipType}, {ClipText} FROM {ClipLog} WHERE {ClipOrder} = 0";
+                string query = $"SELECT ClipType, ClipText FROM ClipLog WHERE ClipOrder = (SELECT MAX(ClipOrder) FROM ClipLog)";
                 using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                 {
                     using (SQLiteDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            lastClipType = reader[$"{ClipType}"].ToString();
-                            lastClipText = reader[$"{ClipText}"].ToString();
+                            lastClipType = reader[$"ClipType"].ToString();
+                            lastClipText = reader[$"ClipText"].ToString();
                         }
                     }
                 }
@@ -66,7 +59,7 @@ namespace ClipboardManager
             {
                 conn.Open();
 
-                string query = $"SELECT COUNT(*) FROM {ClipLog}";
+                string query = $"SELECT COUNT(*) FROM ClipLog";
 
                 using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                 {
@@ -86,7 +79,7 @@ namespace ClipboardManager
             {
                 conn.Open();
 
-                string query = $"SELECT {String} FROM {FilteredStrings}";
+                string query = $"SELECT String FROM FilteredStrings";
 
                 using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                 {
@@ -102,30 +95,28 @@ namespace ClipboardManager
             }
         }
 
+        //---ASYNC SQL--- RUNS DURING LOOP
         // Check SQL to see if clipText already exists in the database.
-        private int ReturnClipOrder_IfTextFound(string text)
+        private async Task<int> ReturnClipOrder_IfTextFoundAsync(string text)
         {
-            int rowClipOrder;
-
             using (SQLiteConnection conn = new SQLiteConnection(connString))
             {
-                conn.Open();
+                await conn.OpenAsync(); // Open the connection asynchronously
 
-                string query = $"SELECT {ClipOrder} FROM ClipLog WHERE ClipText = @Text";
-
+                string query = "SELECT ClipOrder FROM ClipLog WHERE ClipText = @Text";
                 using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@Text", text);
-                    object result = cmd.ExecuteScalar();
+                    object result = await cmd.ExecuteScalarAsync(); // Execute the query asynchronously
 
-                    rowClipOrder = result != null && int.TryParse(result.ToString(), out int clipOrder) ? clipOrder : -1;
+                    // Parse the result and return the ClipOrder, or -1 if not found
+                    return result != null && int.TryParse(result.ToString(), out int clipOrder) ? clipOrder : -1;
                 }
             }
-            return rowClipOrder; // Should return ClipOrder if the text exists and -1 if the text does not.
         }
 
         // If so change the clipOrder so that that entry moves back up to the top
-        private string ReorderClipLog(int originalClipOrder)
+        private string ReorderClipLogAsync(int clipOrder)
         {
             using (SQLiteConnection conn = new SQLiteConnection(connString))
             {
@@ -135,56 +126,171 @@ namespace ClipboardManager
                 {
                     try
                     {
-                        // Step 1: If the ClipOrder is already 0, no reordering is needed
-                        if (originalClipOrder == 0)
+                        // Step 1: Get the current maximum ClipOrder
+                        string getMaxClipOrderQuery = "SELECT MAX(ClipOrder) FROM ClipLog";
+                        int maxClipOrder = 0;
+
+                        using (SQLiteCommand getMaxCmd = new SQLiteCommand(getMaxClipOrderQuery, conn, transaction))
                         {
-                            transaction.Rollback(); // Exit the transaction early
-                            return "0"; // Zero indicates success
+                            object result = getMaxCmd.ExecuteScalar();
+                            if (result != null && int.TryParse(result.ToString(), out int lastClipOrder))
+                            {
+                                maxClipOrder = lastClipOrder;
+                            }
                         }
 
-                        // Step 2: Temporarily set the ClipOrder of the found text to -1
-                        string setTemporaryOrderQuery = "UPDATE ClipLog SET ClipOrder = -1 WHERE ClipOrder = @ClipOrder";
-                        using (SQLiteCommand tempUpdateCmd = new SQLiteCommand(setTemporaryOrderQuery, conn, transaction))
+                        // Step 2: Update the target record's ClipOrder to maxClipOrder + 1
+                        string updateClipOrderQuery = "UPDATE ClipLog SET ClipOrder = @NewClipOrder WHERE ClipOrder = @CurrentClipOrder";
+                        using (SQLiteCommand updateCmd = new SQLiteCommand(updateClipOrderQuery, conn, transaction))
                         {
-                            tempUpdateCmd.Parameters.AddWithValue("@ClipOrder", originalClipOrder);
-                            tempUpdateCmd.ExecuteNonQuery();
+                            updateCmd.Parameters.AddWithValue("@NewClipOrder", maxClipOrder + 1);
+                            updateCmd.Parameters.AddWithValue("@CurrentClipOrder", clipOrder);
+                            updateCmd.ExecuteNonQuery();
                         }
 
-                        // Step 3: Increment the ClipOrder of all records from 0 to (originalClipOrder - 1)
-                        string incrementOrderQuery = @"
-                        UPDATE ClipLog
-                        SET ClipOrder = ClipOrder + 1
-                        WHERE ClipOrder >= 0 AND ClipOrder < @OriginalClipOrder";
-                        using (SQLiteCommand incrementCmd = new SQLiteCommand(incrementOrderQuery, conn, transaction))
+                        // Commit the transaction
+                        transaction.Commit();
+                        return SQL_SUCCESS;
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        return SQL_ERR_REORDER;
+                    }
+                }
+            }
+        }
+
+        // If the text is not found, this method will add it.
+        private string AddNewClipLogEntry()
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connString))
+            {
+                conn.Open();
+
+                using (SQLiteTransaction transaction = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // Step 1: Get the current maximum ClipOrder
+                        string getMaxClipOrderQuery = "SELECT MAX(ClipOrder) FROM ClipLog";
+                        int maxClipOrder = 0; // Default to 0 if the table is empty
+
+                        using (SQLiteCommand getMaxCmd = new SQLiteCommand(getMaxClipOrderQuery, conn, transaction))
                         {
-                            incrementCmd.Parameters.AddWithValue("@OriginalClipOrder", originalClipOrder);
-                            incrementCmd.ExecuteNonQuery();
+                            object result = getMaxCmd.ExecuteScalar();
+                            if (result != null && int.TryParse(result.ToString(), out int clipOrder))
+                            {
+                                maxClipOrder = clipOrder;
+                            }
                         }
 
-                        // Step 4: Update the ClipOrder of the found text to 0
-                        string setFinalOrderQuery = "UPDATE ClipLog SET ClipOrder = 0 WHERE ClipOrder = -1";
-                        using (SQLiteCommand finalUpdateCmd = new SQLiteCommand(setFinalOrderQuery, conn, transaction))
+                        // Step 2: Insert the new record with ClipOrder = maxClipOrder + 1
+                        string insertQuery = @"
+                        INSERT INTO ClipLog (ClipOrder, ClipType, ClipText)
+                        VALUES (@ClipOrder, @ClipType, @ClipText)";
+                        using (SQLiteCommand insertCmd = new SQLiteCommand(insertQuery, conn, transaction))
                         {
-                            finalUpdateCmd.ExecuteNonQuery();
+                            insertCmd.Parameters.AddWithValue("@ClipOrder", maxClipOrder + 1);
+                            insertCmd.Parameters.AddWithValue("@ClipType", currClipType);
+                            insertCmd.Parameters.AddWithValue("@ClipText", currClipText);
+                            insertCmd.ExecuteNonQuery();
+                        }
+
+                        // Commit the transaction
+                        transaction.Commit();
+
+                        // Return success
+                        return SQL_SUCCESS;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Roll back the transaction if any error occurs
+                        transaction.Rollback();
+                        Console.WriteLine($"Failed to add new ClipLog entry: {ex.Message}");
+                        return SQL_ERR_ADD;
+                    }
+                }
+            }
+        }
+
+        // Get number of records from ClipLog
+        private int GetNumberOfRecords()
+        {
+            int recordCount = -1;
+            using (SQLiteConnection conn = new SQLiteConnection(connString))
+            {
+                conn.Open();
+
+                // Get count
+                string countQuery = @"
+                SELECT COUNT(*) FROM ClipLog
+                ";
+
+                using (SQLiteCommand countCmd = new SQLiteCommand(countQuery, conn))
+                {
+                    object result = countCmd.ExecuteScalar();
+                    if (result != null && int.TryParse(result.ToString(), out int numRecords))
+                    {
+                        recordCount = numRecords;
+                    }
+                }
+            }
+
+            return recordCount;
+        }
+
+        // Delete old records if we are at capacity
+        private string DeleteOldestRecord()
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connString))
+            {
+                conn.Open();
+
+                using (SQLiteTransaction transaction = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // Step 1: Find the record with the lowest ClipOrder
+                        string getMinClipOrderQuery = "SELECT Id FROM ClipLog WHERE ClipOrder = (SELECT MIN(ClipOrder) FROM ClipLog)";
+                        int recordIdToDelete = -1;
+
+                        using (SQLiteCommand getMinCmd = new SQLiteCommand(getMinClipOrderQuery, conn, transaction))
+                        {
+                            object result = getMinCmd.ExecuteScalar();
+                            if (result != null && int.TryParse(result.ToString(), out int id))
+                            {
+                                recordIdToDelete = id;
+                            }
+                        }
+
+                        // Step 2: If a record was found, delete it
+                        if (recordIdToDelete != -1)
+                        {
+                            string deleteQuery = "DELETE FROM ClipLog WHERE Id = @Id";
+                            using (SQLiteCommand deleteCmd = new SQLiteCommand(deleteQuery, conn, transaction))
+                            {
+                                deleteCmd.Parameters.AddWithValue("@Id", recordIdToDelete);
+                                deleteCmd.ExecuteNonQuery();
+                            }
                         }
 
                         // Commit the transaction
                         transaction.Commit();
 
                         // Return
-                        return "0"; // Zero indicates success
+                        return SQL_SUCCESS;
                     }
                     catch (Exception ex)
                     {
                         // Roll back the transaction if any error occurs
                         transaction.Rollback();
-                        return (ex.Message);
+                        Console.WriteLine("Failed to delete the oldest record");
+                        return SQL_ERR_DELETE;
                     }
                 }
             }
         }
-
-
 
     }
 }

@@ -30,7 +30,7 @@ namespace ClipboardManager
                 RunFilterTest();
 
                 // Perform actions based on results
-                ActionOnResults();
+                await ActionOnResultsAsync();
 
                 // Update vars for next check
                 UpdateVarsForNextCheck();
@@ -79,7 +79,7 @@ namespace ClipboardManager
             }
         }
 
-        private async void ActionOnResults()
+        private async Task ActionOnResultsAsync()
         {
             if (clipChanged)
             {
@@ -102,7 +102,7 @@ namespace ClipboardManager
                     indicator = pb_clipTypeText; // Show type = Text (Grey with text)
 
                     // Check SQL to see if clipText already exists in the database.
-                    int alreadyExistingClipOrder = ReturnClipOrder_IfTextFound(currClipText);
+                    int alreadyExistingClipOrder = await ReturnClipOrder_IfTextFoundAsync(currClipText);
                     
                     // If we found the text,
                     if (alreadyExistingClipOrder > -1)
@@ -111,24 +111,44 @@ namespace ClipboardManager
                         if (alreadyExistingClipOrder > 0)
                         {
                             // Attempt to reorder
-                            string reorderResult = ReorderClipLog(alreadyExistingClipOrder);
-                            if (reorderResult != "0")
+                            string reorderResult = await ReorderClipLogAsync(alreadyExistingClipOrder);
+                            if (reorderResult == SQL_ERR_REORDER)
                             {
-                                MessageBox.Show($"Reordering ClipLog failed with the following exception:\r\n\r\n" +
-                                    $"'{reorderResult}'");
+                                MessageBox.Show($"Reordering ClipLog failed.", "Reorder Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
                             }
                         }
                     }
                     // If we did NOT find the text,
                     else
                     {
+                        string addResult = await AddNewClipLogEntryAsync();
+                        if (addResult == SQL_ERR_ADD)
+                        {
+                            MessageBox.Show($"Adding to ClipLog failed.", "Insert Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                    }
 
+                    // Check to see if we have maxxed out the database
+                    int clipLogCount = await GetNumberOfRecordsAsync();
+                    if (clipLogCount < 0)
+                    {
+                        MessageBox.Show($"Getting ClipLog count failed.", "Count Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    // If we're maxxed, delete the oldest record (lowest ClipCount int)
+                    if (clipLogCount > maxRecords)
+                    {
+                        await DeleteOldestRecordAsync();
                     }
                 }
                 else
                 {
                     throw new InvalidOperationException($"Unexpected clipboard type: {currClipType}");
                 }
+
                 ShowClipTypeIndicator((PictureBox)indicator);
 
                 // Toggle green clip indicator to show that clipboard has changed
