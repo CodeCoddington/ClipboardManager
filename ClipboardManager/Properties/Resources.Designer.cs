@@ -133,9 +133,19 @@ namespace ClipboardManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap MiniToMedium_Arrows {
+        internal static System.Drawing.Bitmap MediumToMini_Arrows_Mirrored_28x37 {
             get {
-                object obj = ResourceManager.GetObject("MiniToMedium_Arrows", resourceCulture);
+                object obj = ResourceManager.GetObject("MediumToMini_Arrows_Mirrored_28x37", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap MiniToMedium_Arrows_Mirrored_28x37 {
+            get {
+                object obj = ResourceManager.GetObject("MiniToMedium_Arrows_Mirrored_28x37", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -18,7 +18,7 @@ namespace ClipboardManager
 
         // SQL
         // Values
-        private int maxRecords = 100;
+        private int maxUnpinnedRecords = 100;
 
         // Errors
         private const string SQL_SUCCESS = "SQL_SUCCESS";
@@ -38,10 +38,17 @@ namespace ClipboardManager
         // Lists
         private List<Control> typeIndicators = new List<Control>();
         private List<string> filterList = new List<string>();
-        private List<string> clipList = new List<string>();
+        private List<string> unpinnedClipList = new List<string>();
+        private List<string> pinnedClipList = new List<string>();
 
         // Form sizes - will add more as we continue design.
         private Size formSizeMini = new Size(77, 228);
-        private Size formSizeMedium = new Size(485, 710);
+        private Size formSizeMedium = new Size(500, 710);
+
+        // Controls
+        int topPosition = 6;
+
+        // Flow control
+        bool eventsEnabled = true;
     }
 }

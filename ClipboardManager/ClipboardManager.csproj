@@ -145,9 +145,6 @@
     <None Include="Resources\CircleIndicator_FilteredText.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\MiniToMedium_Arrows.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\ControlBox_Only2.png" />
   </ItemGroup>
   <ItemGroup>
@@ -182,6 +179,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Pin_Pinned_36.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MiniToMedium_Arrows_Mirrored_28x37.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MediumToMini_Arrows_Mirrored_28x37.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

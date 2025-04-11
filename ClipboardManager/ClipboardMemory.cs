@@ -29,7 +29,23 @@ namespace ClipboardManager
             {
                 conn.Open();
 
-                string query = $"SELECT ClipType, ClipText FROM ClipLog WHERE ClipOrder = (SELECT MAX(ClipOrder) FROM ClipLog)";
+                // Look for pinned records first
+                string query = $"SELECT ClipType, ClipText FROM ClipLog WHERE UnpinnedClipOrder = (SELECT MIN(UnpinnedClipOrder) FROM ClipLog)";
+                using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
+                {
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            lastClipType = reader[$"ClipType"].ToString();
+                            lastClipText = reader[$"ClipText"].ToString();
+                            return;
+                        }
+                    }
+                }
+
+                // If pinned record not found, look for unpinned record
+                query = $"SELECT ClipType, ClipText FROM ClipLog WHERE PinnedClipOrder = (SELECT MAX(PinnedClipOrder) FROM ClipLog";
                 using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                 {
                     using (SQLiteDataReader reader = cmd.ExecuteReader())
@@ -44,9 +60,10 @@ namespace ClipboardManager
             }
         }
 
-        private void UpdateClipList()
+        private void InitializeClipLists()
         {
-            clipList.Clear();
+            unpinnedClipList.Clear();
+            pinnedClipList.Clear();
 
             int clipLogRowCount = GetClipLogRowCount();
             if (clipLogRowCount == 0)
@@ -58,7 +75,7 @@ namespace ClipboardManager
             {
                 conn.Open();
 
-                string query = @"SELECT ClipText FROM ClipLog ORDER BY ClipOrder DESC";
+                string query = @"SELECT ClipText FROM ClipLog WHERE Pinned = 1 ORDER BY PinnedClipOrder ASC";
 
                 using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                 {
@@ -69,7 +86,24 @@ namespace ClipboardManager
                             string clipText = reader["ClipText"].ToString();
                             if (!string.IsNullOrEmpty(clipText))
                             {
-                                clipList.Add(clipText);
+                                pinnedClipList.Add(clipText);
+                            }
+                        }
+                    }
+                }
+
+                query = @"SELECT ClipText FROM ClipLog ORDER BY UnpinnedClipOrder DESC";
+
+                using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
+                {
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string clipText = reader["ClipText"].ToString();
+                            if (!string.IsNullOrEmpty(clipText))
+                            {
+                                unpinnedClipList.Add(clipText);
                             }
                         }
                     }
@@ -127,21 +161,46 @@ namespace ClipboardManager
             {
                 await conn.OpenAsync(); // Open the connection asynchronously
 
-                string query = "SELECT ClipOrder FROM ClipLog WHERE ClipText = @Text";
+                string query = "SELECT Pinned, UnpinnedClipOrder, PinnedClipOrder FROM ClipLog WHERE ClipText = @Text";
                 using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@Text", text);
-                    object result = await cmd.ExecuteScalarAsync(); // Execute the query asynchronously
 
-                    // Parse the result and return the ClipOrder, or -1 if not found
-                    return result != null && int.TryParse(result.ToString(), out int clipOrder) ? clipOrder : -1;
+                    using (SQLiteDataReader reader = (SQLiteDataReader)await cmd.ExecuteReaderAsync())
+                    {
+                        if (reader.Read())
+                        {
+                            bool isPinned = reader.GetInt32(reader.GetOrdinal("Pinned")) == 1;
+                            int unpinned = reader["UnpinnedClipOrder"] != DBNull.Value
+                                ? int.TryParse(reader["UnpinnedClipOrder"].ToString(), out int u) ? u : 0
+                                : 0;
+                            int pinned = reader["PinnedClipOrder"] != DBNull.Value
+                                ? int.TryParse(reader["PinnedClipOrder"].ToString(), out int p) ? p : 0
+                                : 0;
+
+                            return isPinned ? pinned : unpinned;
+                        }
+                    }
                 }
             }
+
+            return 0; // Return 0 if no matching row is found
         }
 
         // If so change the clipOrder so that that entry moves back up to the top
         private async Task<string> ReorderClipLogAsync(int clipOrder)
         {
+            if (clipOrder == 0)
+            {
+                Console.WriteLine("Invalid clipOrder: Could not get max (abs value) ClipOrder");
+                return SQL_ERR_REORDER;
+            }
+
+            bool isPinned = clipOrder < 0;
+            string columnName = isPinned ? "PinnedClipOrder" : "UnpinnedClipOrder";
+            string getMaxClipOrderQuery = $"SELECT {(isPinned ? "MIN" : "MAX")}({columnName}) FROM ClipLog";
+            string updateClipOrderQuery = $"UPDATE ClipLog SET {columnName} = @NewClipOrder WHERE {columnName} = @CurrentClipOrder";
+
             using (SQLiteConnection conn = new SQLiteConnection(connString))
             {
                 await conn.OpenAsync();
@@ -150,31 +209,35 @@ namespace ClipboardManager
                 {
                     try
                     {
-                        // Step 1: Get the current maximum ClipOrder
-                        string getMaxClipOrderQuery = "SELECT MAX(ClipOrder) FROM ClipLog";
-                        int maxClipOrder = 0;
+                        // Step 1: Get the current extreme ClipOrder
+                        int currentExtremeClipOrder = 0;
 
                         using (SQLiteCommand getMaxCmd = new SQLiteCommand(getMaxClipOrderQuery, conn, transaction))
                         {
                             object result = await getMaxCmd.ExecuteScalarAsync();
-                            maxClipOrder = result != null && int.TryParse(result.ToString(), out int lastClipOrder) ? lastClipOrder : 0;
+                            if (result == DBNull.Value || result == null || !int.TryParse(result.ToString(), out currentExtremeClipOrder))
+                            {
+                                transaction.Rollback();
+                                Console.WriteLine("No records found in the database.");
+                                return SQL_ERR_REORDER;
+                            }
                         }
 
-                        // Optional: Handle case where maxClipOrder is 0 (e.g., empty database)
-                        if (maxClipOrder == 0)
-                        {
-                            transaction.Rollback();
-                            Console.WriteLine("Could not get max ClipOrder");
-                            return SQL_ERR_REORDER;
-                        }
+                        // Step 2: Update the target record's ClipOrder to the new extreme value
+                        int newClipOrder = isPinned ? currentExtremeClipOrder - 1 : currentExtremeClipOrder + 1;
 
-                        // Step 2: Update the target record's ClipOrder to maxClipOrder + 1
-                        string updateClipOrderQuery = "UPDATE ClipLog SET ClipOrder = @NewClipOrder WHERE ClipOrder = @CurrentClipOrder";
                         using (SQLiteCommand updateCmd = new SQLiteCommand(updateClipOrderQuery, conn, transaction))
                         {
-                            updateCmd.Parameters.AddWithValue("@NewClipOrder", maxClipOrder + 1);
+                            updateCmd.Parameters.AddWithValue("@NewClipOrder", newClipOrder);
                             updateCmd.Parameters.AddWithValue("@CurrentClipOrder", clipOrder);
-                            await updateCmd.ExecuteNonQueryAsync();
+
+                            int rowsAffected = await updateCmd.ExecuteNonQueryAsync();
+                            if (rowsAffected == 0)
+                            {
+                                transaction.Rollback();
+                                Console.WriteLine("Failed to update ClipOrder. No rows were affected.");
+                                return SQL_ERR_REORDER;
+                            }
                         }
 
                         // Commit the transaction
@@ -184,14 +247,14 @@ namespace ClipboardManager
                     catch (Exception ex)
                     {
                         transaction.Rollback();
-                        Console.WriteLine(ex.Message);
+                        Console.WriteLine($"Error during reordering: {ex.Message}");
                         return SQL_ERR_REORDER;
                     }
                 }
             }
         }
 
-        // If the text is not found, this method will add it.
+        // If the text is not found, this method will add it (Always add new entries as unpinned).
         private async Task<string> AddNewClipLogEntryAsync()
         {
             using (SQLiteConnection conn = new SQLiteConnection(connString))
@@ -203,13 +266,13 @@ namespace ClipboardManager
                     try
                     {
                         // Step 1: Get the current maximum ClipOrder
-                        string getMaxClipOrderQuery = "SELECT MAX(ClipOrder) FROM ClipLog";
+                        string getMaxClipOrderQuery = "SELECT MAX(UnpinnedClipOrder) FROM ClipLog";
                         int maxClipOrder = 0; // Default to 0 if the table is empty
 
                         using (SQLiteCommand getMaxCmd = new SQLiteCommand(getMaxClipOrderQuery, conn, transaction))
                         {
                             object result = await getMaxCmd.ExecuteScalarAsync(); // Execute the query asynchronously
-                            if (result != null && int.TryParse(result.ToString(), out int clipOrder))
+                            if (result != DBNull.Value && result != null && int.TryParse(result.ToString(), out int clipOrder))
                             {
                                 maxClipOrder = clipOrder;
                             }
@@ -217,7 +280,7 @@ namespace ClipboardManager
 
                         // Step 2: Insert the new record with ClipOrder = maxClipOrder + 1
                         string insertQuery = @"
-                        INSERT INTO ClipLog (ClipOrder, ClipType, ClipText)
+                        INSERT INTO ClipLog (UnpinnedClipOrder, ClipType, ClipText)
                         VALUES (@ClipOrder, @ClipType, @ClipText)";
                         using (SQLiteCommand insertCmd = new SQLiteCommand(insertQuery, conn, transaction))
                         {
@@ -245,7 +308,7 @@ namespace ClipboardManager
         }
 
         // Get number of records from ClipLog
-        private async Task<int> GetNumberOfRecordsAsync()
+        private async Task<int> GetNumberOfUnpinnedRecordsAsync()
         {
             int recordCount = -1; // Default value in case of failure
             using (SQLiteConnection conn = new SQLiteConnection(connString))
@@ -254,7 +317,7 @@ namespace ClipboardManager
 
                 // Get count
                 string countQuery = @"
-                SELECT COUNT(*) FROM ClipLog
+                SELECT COUNT(*) FROM ClipLog WHERE Pinned = 0
                 ";
 
                 using (SQLiteCommand countCmd = new SQLiteCommand(countQuery, conn))
@@ -282,7 +345,7 @@ namespace ClipboardManager
                     try
                     {
                         // Step 1: Find the record with the lowest ClipOrder
-                        string getMinClipOrderQuery = "SELECT Id FROM ClipLog WHERE ClipOrder = (SELECT MIN(ClipOrder) FROM ClipLog)";
+                        string getMinClipOrderQuery = "SELECT Id FROM ClipLog WHERE UnpinnedClipOrder = (SELECT MIN(UnpinnedClipOrder) FROM ClipLog)";
                         int recordIdToDelete = -1;
 
                         using (SQLiteCommand getMinCmd = new SQLiteCommand(getMinClipOrderQuery, conn, transaction))
@@ -292,6 +355,14 @@ namespace ClipboardManager
                             {
                                 recordIdToDelete = id;
                             }
+                        }
+
+                        if (recordIdToDelete < 0)
+                        {
+                            // Roll back the transaction if any error occurs
+                            transaction.Rollback();
+                            Console.WriteLine("Failed to find an unpinned record to delete");
+                            return SQL_ERR_DELETE;
                         }
 
                         // Step 2: If a record was found, delete it
@@ -315,7 +386,7 @@ namespace ClipboardManager
                     {
                         // Roll back the transaction if any error occurs
                         transaction.Rollback();
-                        Console.WriteLine("Failed to delete the oldest record");
+                        Console.WriteLine("Failed to delete the oldest unpinned record");
                         return SQL_ERR_DELETE;
                     }
                 }

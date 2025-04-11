@@ -139,8 +139,11 @@
   <data name="ControlBox_Only2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ControlBox_Only2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="MiniToMedium_Arrows" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MiniToMedium_Arrows.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="MediumToMini_Arrows_Mirrored_28x37" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MediumToMini_Arrows_Mirrored_28x37.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MiniToMedium_Arrows_Mirrored_28x37" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MiniToMedium_Arrows_Mirrored_28x37.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Pin_Pinned_36" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Pin_Pinned_36.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

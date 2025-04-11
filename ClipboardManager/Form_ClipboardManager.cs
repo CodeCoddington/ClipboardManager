@@ -28,8 +28,8 @@ namespace ClipboardManager
             this.Shown += Form_clipboardManager_Shown;
 
             // Buttons and related
-            btn_miniToMedium.Click += Btn_smallToMedium_Click;
-            pb_miniToMedium_buttonFace.Click += Pb_smallToMedium_buttonFace_Click;
+            btn_changeFormSize.Click += Btn_changeFormSize_Click;
+            pb_sizeChange_buttonFace.Click += Pb_sizeChange_buttonFace_Click;
         }
 
         private void InitializeGlobalVars()
@@ -44,15 +44,32 @@ namespace ClipboardManager
         //---FORM LOAD / SHOWN---
         private void Form_clipboardManager_Load(object sender, EventArgs e)
         {
+            InitializeClipboard();
             InitializeControlProperties();
             SetFormSize(formSizeMini); // Mini
             SetFormText("");
             SetStartingLocation();
-            UpdateClipList();
-            if (clipList.Count > 0)
+            InitializeClipLists();
+
+            // Clear any existing controls in the panel
+            panel.Controls.Clear();
+
+            if (pinnedClipList.Count > 0)
             {
-                PopulatePanelWithClipList();
+                // Populate Pinned first
+                PopulatePanelWithClipList(isPinned: true);
             }
+
+            if (unpinnedClipList.Count > 0)
+            {
+                // Then populate unpinned
+                PopulatePanelWithClipList(isPinned: false);
+            }
+        }
+
+        private void InitializeClipboard()
+        {
+            Clipboard.Clear();
         }
 
         private void InitializeControlProperties()
@@ -66,6 +83,9 @@ namespace ClipboardManager
             pb_clipTypeNonText.Visible = false;
             pb_clipTypeText.Visible = false;
 
+            // Initialize picture on grow / shrink button
+            pb_sizeChange_buttonFace.BackgroundImage = Properties.Resources.MiniToMedium_Arrows_Mirrored_28x37;
+
             // Add to list - SQL
             typeIndicators.Add(pb_clipTypeText);
             typeIndicators.Add(pb_clipTypeFilteredText);
@@ -75,9 +95,27 @@ namespace ClipboardManager
 
         private void SetFormSize(Size size)
         {
-            this.MinimumSize = size;
-            this.Size = size;
-            this.MaximumSize = size;
+            bool growing = size == formSizeMedium;
+            if (growing)
+            {
+                // Growing the form
+                this.MinimumSize = size;
+                this.Size = size;
+                this.MaximumSize = size;
+
+                // Update window text
+                this.Text = "Clipboard Manager";
+            }
+            else
+            {
+                // Shrinking the form
+                this.MaximumSize = size;
+                this.Size = size;
+                this.MinimumSize = size;
+
+                // Update window text
+                this.Text = "CM";
+            }
         }
 
         private void SetFormText(string text)
@@ -87,96 +125,105 @@ namespace ClipboardManager
 
         private void SetStartingLocation()
         {
-            // Position in bottom-right corner of primary screen
+            // Position in top-left corner of primary screen
             Rectangle workingArea = Screen.PrimaryScreen.WorkingArea;
-            this.Location = new Point(workingArea.Right - this.Width, workingArea.Bottom - this.Height);
+            this.Location = new Point(workingArea.Left, workingArea.Top);
         }
 
         // Generate dynamic controls
-        private void PopulatePanelWithClipList()
+        private void PopulatePanelWithClipList(bool isPinned)
         {
-            // Clear any existing controls in the panel
-            panel.Controls.Clear();
+            List<string> clipList = isPinned ? pinnedClipList : unpinnedClipList;
+            if (clipList.Count == 0) return;
 
-            // Starting position for the first RichTextBox
-            int topPosition = 6;
+            // Starting position for the first row of controls
+            // top position is initialized to 6 in global
+            int x = 6;                                  // Left margin
+            int offset = 12;                            // Space between rows
+
+            // Fixed sizes for controls since the form is not resizable
+            int rtbWidth = 261;
+            int rtbHeight = 83;
+
+            int tbWidth = 75;
+            int tbHeight = 36;
+
+            int btnWidth = 75;
+            int btnHeight = 36;
+
+            int pbWidth = 36;
+            int pbHeight = 36;
 
             for (int i = 0; i < clipList.Count; i++)
             {
                 string clipText = clipList[i];
 
-                int x = 6;
-                int offset = 12;
-
-                int rtbWidth = 261;
-                int rtbHeight = 83;
-
-                int tbWidth = 75;
-                int tbHeight = 36;
-
-                int btnWidth = 75;
-                int btnHeight = 36;
-
-                int pbWidth = 36;
-                int pbHeight = 36;
-
-                // Create a new RichTextBox for storing text
+                // Create a new RichTextBox for displaying truncated text
                 RichTextBox richTextBox = new RichTextBox
                 {
-                    Name = $"rtb_{i}",                                                          // Set the name
-                    Size = new Size(rtbWidth, rtbHeight),                                       // Set the size
-                    ReadOnly = true,                                                            // Make it read-only
-                    Text = clipText.Length > 50 ? clipText.Substring(0, 50) + "..." : clipText, // Set the text to clipText (50 char max)
-                    Location = new Point(x, topPosition),                                       // Set its location in the panel
-                    Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,         // Ensure responsiveness
-                    Tag = false                                                                 // Denotes if pinned
+                    Name = $"rtb_{i}",
+                    Size = new Size(rtbWidth, rtbHeight),
+                    ReadOnly = true,
+                    Text = clipText.Length > 50 ? clipText.Substring(0, 50) + "..." : clipText,
+                    Location = new Point(x, topPosition),
+                    Anchor = AnchorStyles.Top | AnchorStyles.Left,
+                    Tag = false 
                 };
 
-                // Create a new TextBox for storing list index
+                // Create a new TextBox for displaying the index from the global list
                 TextBox textBox = new TextBox
                 {
-                    Name = $"tb_{i}",                                                       // Set the name
-                    Size = new Size(tbWidth, tbHeight),                                     // Set the size
-                    ReadOnly = true,                                                        // Make it read-only
-                    Font = new Font("Calibri", 13F, FontStyle.Regular),                     // Set the font
-                    Text = i.ToString(),                                                    // Set text to list index
-                    Location = new Point(x + rtbWidth + offset, topPosition),               // Set its location in the panel
-                    Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,     // Ensure responsiveness
-                    Tag = false                                                             // Denotes if pinned
+                    Name = $"tb_{i}",
+                    Size = new Size(tbWidth, tbHeight),
+                    ReadOnly = true,
+                    BackColor = SystemColors.ControlDark,
+                    ForeColor = Color.Black,
+                    Font = new Font("Calibri", 13F, FontStyle.Regular),
+                    Text = i.ToString(),
+                    Location = new Point(x + rtbWidth + offset, topPosition),
+                    Anchor = AnchorStyles.Top | AnchorStyles.Left,
+                    Tag = false
                 };
 
-                // Create a new Button for pasting
+                // Create a new Button for pasting the clipboard content
                 Button button = new Button
                 {
-                    Name = $"btn_{i}",                                                                  // Set the name
-                    Size = new Size(btnWidth, btnHeight),                                               // Set the Size
-                    BackColor = Color.White,                                                            // Set the BackColor
-                    Font = new Font("Calibri", 13F, FontStyle.Bold),                                    // Set the font
-                    Text = "Paste",                                                                     // Set the text to 'Paste'
-                    Location = new Point(x + rtbWidth + offset, topPosition + (rtbHeight - btnHeight)), // Set its location in the panel
-                    Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,                 // Ensure responsiveness
-                    Tag = false                                                                         // Denotes if pinned
+                    Name = $"btn_{i}",
+                    Size = new Size(btnWidth, btnHeight),
+                    BackColor = Color.White,
+                    ForeColor = Color.Black,
+                    Font = new Font("Calibri", 13F, FontStyle.Bold),
+                    Text = "Paste",
+                    Location = new Point(x + rtbWidth + offset, topPosition + (rtbHeight - btnHeight)),
+                    Anchor = AnchorStyles.Top | AnchorStyles.Left,
+                    Tag = false
                 };
 
-                // Create a new PictureBox for storing the pinned state
+                // Add an event handler for the Paste button
+                button.Click += (s, e) => HandlePasteClick(Convert.ToInt32(button.Name.Split('_')[1]));
+
+                // Create a new PictureBox for displaying the pinned/unpinned state
                 PictureBox pictureBox = new PictureBox
                 {
                     Name = $"pb_{i}",
                     Size = new Size(pbWidth, pbHeight),
-                    Location = new Point(x + rtbWidth + offset + tbWidth + offset, topPosition + (rtbHeight - btnHeight)),
+                    Location = new Point(x + rtbWidth + offset + tbWidth + offset, topPosition + (rtbHeight - pbHeight)),
                     BackgroundImage = Properties.Resources.Pin_Unpinned_36,
                     BackgroundImageLayout = ImageLayout.None,
                     Tag = false
                 };
 
-                // Add controls to the panel
+                // Add an event handler for the pin/unpin feature
+                pictureBox.Click += (s, e) => HandlePinClick(pictureBox);
+
+                // Add all controls to the panel
                 panel.Controls.Add(richTextBox);
                 panel.Controls.Add(textBox);
                 panel.Controls.Add(button);
                 panel.Controls.Add(pictureBox);
 
-                // Update the top position for the next RichTextBox
-                topPosition += richTextBox.Height + offset; // Add some spacing between controls
+                // Update the top position for the next row
+                topPosition += rtbHeight + offset;
             }
         }
 
@@ -203,16 +250,59 @@ namespace ClipboardManager
             pb_clipChangedIndicator.Visible = false;
         }
 
-        //---ENLARGE FORM---
-        private void Pb_smallToMedium_buttonFace_Click(object sender, EventArgs e)
+        //---CHANGE FORM SIZE---
+        private void Pb_sizeChange_buttonFace_Click(object sender, EventArgs e)
         {
-            btn_miniToMedium.PerformClick();
+            btn_changeFormSize.PerformClick();
         }
 
-        private void Btn_smallToMedium_Click(object sender, EventArgs e)
+        private void Btn_changeFormSize_Click(object sender, EventArgs e)
         {
+            // Set vars
+            bool growing = this.Size == formSizeMini;
+            //Image buttonFace = growing ? 
+                //Properties.Resources.MediumToMini_Arrows_Mirrored_28x37 : Properties.Resources.MiniToMedium_Arrows_Mirrored_28x37;
+
+            Size newFormSize = growing ? formSizeMedium : formSizeMini;
+
+            // Change button face
+            pb_sizeChange_buttonFace.BackgroundImage = null;
+            pb_sizeChange_buttonFace.BackgroundImage = growing ?
+                Properties.Resources.MediumToMini_Arrows_Mirrored_28x37 : Properties.Resources.MiniToMedium_Arrows_Mirrored_28x37;
+
             // Change form size
-            SetFormSize(formSizeMedium);
+            SetFormSize(newFormSize);
+        }
+
+        //---PIN CLICK---
+        private void HandlePinClick(PictureBox pictureBox)
+        {
+            bool isPinned = (bool)pictureBox.Tag; // Get the current pin state
+            pictureBox.Tag = !isPinned;           // Toggle the pin state
+            pictureBox.BackgroundImage = isPinned ? Properties.Resources.Pin_Pinned_36 : Properties.Resources.Pin_Unpinned_36;
+
+            // Now trigger the SQL pin stuff and moving controls
+        }
+
+        //---PASTE CLICK---
+        private void HandlePasteClick(int index)
+        {
+            Button button = (Button)GetControlByName(panel, $"btn_{index}");
+            bool isPinned = (bool)button.Tag;
+            List<string> clipList = isPinned ? pinnedClipList : unpinnedClipList;
+            string fullText = clipList[index]; // Retrieve the full text from the global list
+            eventsEnabled = false;
+            Clipboard.SetText(fullText);       // Set the clipboard content
+            eventsEnabled = true;
+
+            // Then off to autoIt to open the correct window and paste.
+        }
+
+        //---HELPER---
+        public Control GetControlByName(Control parent, string name)
+        {
+            Control[] controls = parent.Controls.Find(name, true);
+            return controls.Length > 0 ? controls[0] : null;
         }
     }
 }

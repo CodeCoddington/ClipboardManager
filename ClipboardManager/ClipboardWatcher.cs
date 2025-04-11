@@ -20,6 +20,8 @@ namespace ClipboardManager
             {
                 await Task.Delay(250);
 
+                if (!eventsEnabled) continue;
+
                 // Determine the current clipboard content type and text
                 ReadClipContents();
 
@@ -105,18 +107,14 @@ namespace ClipboardManager
                     int alreadyExistingClipOrder = await ReturnClipOrder_IfTextFoundAsync(currClipText);
                     
                     // If we found the text,
-                    if (alreadyExistingClipOrder > -1)
+                    if (alreadyExistingClipOrder != 0)
                     {
-                        // And if the clipOrder of the text is not already at zero (top of list),
-                        if (alreadyExistingClipOrder > 0)
+                        // Attempt to reorder
+                        string reorderResult = await ReorderClipLogAsync(alreadyExistingClipOrder);
+                        if (reorderResult == SQL_ERR_REORDER)
                         {
-                            // Attempt to reorder
-                            string reorderResult = await ReorderClipLogAsync(alreadyExistingClipOrder);
-                            if (reorderResult == SQL_ERR_REORDER)
-                            {
-                                MessageBox.Show($"Reordering ClipLog failed.", "Reorder Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                return;
-                            }
+                            MessageBox.Show($"Reordering ClipLog failed.", "Reorder Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
                         }
                     }
                     // If we did NOT find the text,
@@ -131,7 +129,7 @@ namespace ClipboardManager
                     }
 
                     // Check to see if we have maxxed out the database
-                    int clipLogCount = await GetNumberOfRecordsAsync();
+                    int clipLogCount = await GetNumberOfUnpinnedRecordsAsync();
                     if (clipLogCount < 0)
                     {
                         MessageBox.Show($"Getting ClipLog count failed.", "Count Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -139,7 +137,7 @@ namespace ClipboardManager
                     }
 
                     // If we're maxxed, delete the oldest record (lowest ClipCount int)
-                    if (clipLogCount > maxRecords)
+                    if (clipLogCount > maxUnpinnedRecords)
                     {
                         await DeleteOldestRecordAsync();
                     }
