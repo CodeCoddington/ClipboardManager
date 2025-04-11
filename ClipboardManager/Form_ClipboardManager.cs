@@ -90,7 +90,7 @@ namespace ClipboardManager
         private async void Form_clipboardManager_Shown(object sender, EventArgs e)
         {
             await Task.Delay(500);
-            StartClipboardMonitor();
+            await StartClipboardMonitorAsync();
         }
         
 

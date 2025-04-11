@@ -9,7 +9,7 @@ namespace ClipboardManager
 {
     public partial class form_clipboardManager : Form
     {
-        private async void StartClipboardMonitor()
+        private async Task StartClipboardMonitorAsync()
         {
             await MonitorClipboard();
         }

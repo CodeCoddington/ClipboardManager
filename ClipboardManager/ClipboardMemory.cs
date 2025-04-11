@@ -14,15 +14,6 @@ namespace ClipboardManager
 
         private static readonly string connString = $"DataSource={dbPath}";
 
-        // Table and Column names
-        // FilteredStrings Table
-        private static readonly string FilteredStrings = "FilteredStrings";
-        private static readonly string String = "String";
-
-        
-
-        private List<string> filterList = new List<string>();
-
         // Methods for setting lastClipType and lastClipText global vars
         private void InitializeLastClipGlobals()
         {
@@ -51,6 +42,40 @@ namespace ClipboardManager
                     }
                 }
             }
+        }
+
+        private List<string> UpdateClipList()
+        {
+            List<string> clipLog = new List<string>();
+
+            int clipLogRowCount = GetClipLogRowCount();
+            if (clipLogRowCount == 0)
+            {
+                return clipLog;
+            }
+
+            using (SQLiteConnection conn = new SQLiteConnection(connString))
+            {
+                conn.Open();
+
+                string query = @"SELECT ClipText FROM ClipLog ORDER BY ClipOrder";
+
+                using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
+                {
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string clipText = reader["ClipText"].ToString();
+                            if (!string.IsNullOrEmpty(clipText))
+                            {
+                                clipLog.Add(clipText);
+                            }
+                        }
+                    }
+                }
+            }
+            return clipLog;
         }
 
         private int GetClipLogRowCount()
@@ -87,7 +112,7 @@ namespace ClipboardManager
                     {
                         while (reader.Read())
                         {
-                            string filterString = reader[$"{String}"].ToString();
+                            string filterString = reader[$"String"].ToString();
                             filterList.Add(filterString);
                         }
                     }
@@ -116,11 +141,11 @@ namespace ClipboardManager
         }
 
         // If so change the clipOrder so that that entry moves back up to the top
-        private string ReorderClipLogAsync(int clipOrder)
+        private async Task<string> ReorderClipLogAsync(int clipOrder)
         {
             using (SQLiteConnection conn = new SQLiteConnection(connString))
             {
-                conn.Open();
+                await conn.OpenAsync();
 
                 using (SQLiteTransaction transaction = conn.BeginTransaction())
                 {
@@ -132,11 +157,16 @@ namespace ClipboardManager
 
                         using (SQLiteCommand getMaxCmd = new SQLiteCommand(getMaxClipOrderQuery, conn, transaction))
                         {
-                            object result = getMaxCmd.ExecuteScalar();
-                            if (result != null && int.TryParse(result.ToString(), out int lastClipOrder))
-                            {
-                                maxClipOrder = lastClipOrder;
-                            }
+                            object result = await getMaxCmd.ExecuteScalarAsync();
+                            maxClipOrder = result != null && int.TryParse(result.ToString(), out int lastClipOrder) ? lastClipOrder : 0;
+                        }
+
+                        // Optional: Handle case where maxClipOrder is 0 (e.g., empty database)
+                        if (maxClipOrder == 0)
+                        {
+                            transaction.Rollback();
+                            Console.WriteLine("Could not get max ClipOrder");
+                            return SQL_ERR_REORDER;
                         }
 
                         // Step 2: Update the target record's ClipOrder to maxClipOrder + 1
@@ -145,7 +175,7 @@ namespace ClipboardManager
                         {
                             updateCmd.Parameters.AddWithValue("@NewClipOrder", maxClipOrder + 1);
                             updateCmd.Parameters.AddWithValue("@CurrentClipOrder", clipOrder);
-                            updateCmd.ExecuteNonQuery();
+                            await updateCmd.ExecuteNonQueryAsync();
                         }
 
                         // Commit the transaction
@@ -155,6 +185,7 @@ namespace ClipboardManager
                     catch (Exception ex)
                     {
                         transaction.Rollback();
+                        Console.WriteLine(ex.Message);
                         return SQL_ERR_REORDER;
                     }
                 }
@@ -162,11 +193,11 @@ namespace ClipboardManager
         }
 
         // If the text is not found, this method will add it.
-        private string AddNewClipLogEntry()
+        private async Task<string> AddNewClipLogEntryAsync()
         {
             using (SQLiteConnection conn = new SQLiteConnection(connString))
             {
-                conn.Open();
+                await conn.OpenAsync(); // Open the connection asynchronously
 
                 using (SQLiteTransaction transaction = conn.BeginTransaction())
                 {
@@ -178,7 +209,7 @@ namespace ClipboardManager
 
                         using (SQLiteCommand getMaxCmd = new SQLiteCommand(getMaxClipOrderQuery, conn, transaction))
                         {
-                            object result = getMaxCmd.ExecuteScalar();
+                            object result = await getMaxCmd.ExecuteScalarAsync(); // Execute the query asynchronously
                             if (result != null && int.TryParse(result.ToString(), out int clipOrder))
                             {
                                 maxClipOrder = clipOrder;
@@ -194,7 +225,7 @@ namespace ClipboardManager
                             insertCmd.Parameters.AddWithValue("@ClipOrder", maxClipOrder + 1);
                             insertCmd.Parameters.AddWithValue("@ClipType", currClipType);
                             insertCmd.Parameters.AddWithValue("@ClipText", currClipText);
-                            insertCmd.ExecuteNonQuery();
+                            await insertCmd.ExecuteNonQueryAsync(); // Execute the insertion asynchronously
                         }
 
                         // Commit the transaction
@@ -215,12 +246,12 @@ namespace ClipboardManager
         }
 
         // Get number of records from ClipLog
-        private int GetNumberOfRecords()
+        private async Task<int> GetNumberOfRecordsAsync()
         {
-            int recordCount = -1;
+            int recordCount = -1; // Default value in case of failure
             using (SQLiteConnection conn = new SQLiteConnection(connString))
             {
-                conn.Open();
+                await conn.OpenAsync(); // Open the connection asynchronously
 
                 // Get count
                 string countQuery = @"
@@ -229,7 +260,7 @@ namespace ClipboardManager
 
                 using (SQLiteCommand countCmd = new SQLiteCommand(countQuery, conn))
                 {
-                    object result = countCmd.ExecuteScalar();
+                    object result = await countCmd.ExecuteScalarAsync(); // Execute the query asynchronously
                     if (result != null && int.TryParse(result.ToString(), out int numRecords))
                     {
                         recordCount = numRecords;
@@ -241,11 +272,11 @@ namespace ClipboardManager
         }
 
         // Delete old records if we are at capacity
-        private string DeleteOldestRecord()
+        private async Task<string> DeleteOldestRecordAsync()
         {
             using (SQLiteConnection conn = new SQLiteConnection(connString))
             {
-                conn.Open();
+                await conn.OpenAsync(); // Open the connection asynchronously
 
                 using (SQLiteTransaction transaction = conn.BeginTransaction())
                 {
@@ -257,7 +288,7 @@ namespace ClipboardManager
 
                         using (SQLiteCommand getMinCmd = new SQLiteCommand(getMinClipOrderQuery, conn, transaction))
                         {
-                            object result = getMinCmd.ExecuteScalar();
+                            object result = await getMinCmd.ExecuteScalarAsync(); // Execute the query asynchronously
                             if (result != null && int.TryParse(result.ToString(), out int id))
                             {
                                 recordIdToDelete = id;
@@ -271,14 +302,14 @@ namespace ClipboardManager
                             using (SQLiteCommand deleteCmd = new SQLiteCommand(deleteQuery, conn, transaction))
                             {
                                 deleteCmd.Parameters.AddWithValue("@Id", recordIdToDelete);
-                                deleteCmd.ExecuteNonQuery();
+                                await deleteCmd.ExecuteNonQueryAsync(); // Execute the deletion asynchronously
                             }
                         }
 
                         // Commit the transaction
                         transaction.Commit();
 
-                        // Return
+                        // Return success
                         return SQL_SUCCESS;
                     }
                     catch (Exception ex)
@@ -291,6 +322,5 @@ namespace ClipboardManager
                 }
             }
         }
-
     }
 }

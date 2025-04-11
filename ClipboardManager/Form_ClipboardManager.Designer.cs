@@ -38,6 +38,8 @@
             this.btn_miniToMedium = new System.Windows.Forms.Button();
             this.pb_clipTypeBox = new System.Windows.Forms.PictureBox();
             this.pb_clipChangeBox = new System.Windows.Forms.PictureBox();
+            this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.gb_clipboard = new System.Windows.Forms.GroupBox();
             this.gb_clipIndicator.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeFilteredText)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeText)).BeginInit();
@@ -47,6 +49,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pb_miniToMedium_buttonFace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipChangeBox)).BeginInit();
+            this.gb_clipboard.SuspendLayout();
             this.SuspendLayout();
             // 
             // gb_clipIndicator
@@ -162,12 +165,34 @@
             this.pb_clipChangeBox.TabIndex = 0;
             this.pb_clipChangeBox.TabStop = false;
             // 
+            // flowLayoutPanel
+            // 
+            this.flowLayoutPanel.Font = new System.Drawing.Font("Calibri", 10F, System.Drawing.FontStyle.Bold);
+            this.flowLayoutPanel.Location = new System.Drawing.Point(0, 23);
+            this.flowLayoutPanel.Name = "flowLayoutPanel";
+            this.flowLayoutPanel.Size = new System.Drawing.Size(717, 388);
+            this.flowLayoutPanel.TabIndex = 1;
+            // 
+            // gb_clipboard
+            // 
+            this.gb_clipboard.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.gb_clipboard.Controls.Add(this.flowLayoutPanel);
+            this.gb_clipboard.Font = new System.Drawing.Font("Calibri", 13F, System.Drawing.FontStyle.Bold);
+            this.gb_clipboard.ForeColor = System.Drawing.Color.White;
+            this.gb_clipboard.Location = new System.Drawing.Point(68, 0);
+            this.gb_clipboard.Name = "gb_clipboard";
+            this.gb_clipboard.Size = new System.Drawing.Size(717, 411);
+            this.gb_clipboard.TabIndex = 0;
+            this.gb_clipboard.TabStop = false;
+            this.gb_clipboard.Text = "Clipboard";
+            // 
             // form_clipboardManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(784, 411);
+            this.Controls.Add(this.gb_clipboard);
             this.Controls.Add(this.gb_clipIndicator);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -184,6 +209,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pb_miniToMedium_buttonFace)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipChangeBox)).EndInit();
+            this.gb_clipboard.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -200,6 +226,8 @@
         private System.Windows.Forms.PictureBox pb_clipTypeBlank;
         private System.Windows.Forms.PictureBox pb_clipChangedIndicator;
         private System.Windows.Forms.PictureBox pb_clipTypeFilteredText;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel;
+        private System.Windows.Forms.GroupBox gb_clipboard;
     }
 }
 
