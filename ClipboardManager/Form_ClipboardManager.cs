@@ -48,6 +48,11 @@ namespace ClipboardManager
             SetFormSize(formSizeMini); // Mini
             SetFormText("");
             SetStartingLocation();
+            UpdateClipList();
+            if (clipList.Count > 0)
+            {
+                PopulatePanelWithClipList();
+            }
         }
 
         private void InitializeControlProperties()
@@ -87,6 +92,94 @@ namespace ClipboardManager
             this.Location = new Point(workingArea.Right - this.Width, workingArea.Bottom - this.Height);
         }
 
+        // Generate dynamic controls
+        private void PopulatePanelWithClipList()
+        {
+            // Clear any existing controls in the panel
+            panel.Controls.Clear();
+
+            // Starting position for the first RichTextBox
+            int topPosition = 6;
+
+            for (int i = 0; i < clipList.Count; i++)
+            {
+                string clipText = clipList[i];
+
+                int x = 6;
+                int offset = 12;
+
+                int rtbWidth = 261;
+                int rtbHeight = 83;
+
+                int tbWidth = 75;
+                int tbHeight = 36;
+
+                int btnWidth = 75;
+                int btnHeight = 36;
+
+                int pbWidth = 36;
+                int pbHeight = 36;
+
+                // Create a new RichTextBox for storing text
+                RichTextBox richTextBox = new RichTextBox
+                {
+                    Name = $"rtb_{i}",                                                          // Set the name
+                    Size = new Size(rtbWidth, rtbHeight),                                       // Set the size
+                    ReadOnly = true,                                                            // Make it read-only
+                    Text = clipText.Length > 50 ? clipText.Substring(0, 50) + "..." : clipText, // Set the text to clipText (50 char max)
+                    Location = new Point(x, topPosition),                                       // Set its location in the panel
+                    Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,         // Ensure responsiveness
+                    Tag = false                                                                 // Denotes if pinned
+                };
+
+                // Create a new TextBox for storing list index
+                TextBox textBox = new TextBox
+                {
+                    Name = $"tb_{i}",                                                       // Set the name
+                    Size = new Size(tbWidth, tbHeight),                                     // Set the size
+                    ReadOnly = true,                                                        // Make it read-only
+                    Font = new Font("Calibri", 13F, FontStyle.Regular),                     // Set the font
+                    Text = i.ToString(),                                                    // Set text to list index
+                    Location = new Point(x + rtbWidth + offset, topPosition),               // Set its location in the panel
+                    Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,     // Ensure responsiveness
+                    Tag = false                                                             // Denotes if pinned
+                };
+
+                // Create a new Button for pasting
+                Button button = new Button
+                {
+                    Name = $"btn_{i}",                                                                  // Set the name
+                    Size = new Size(btnWidth, btnHeight),                                               // Set the Size
+                    BackColor = Color.White,                                                            // Set the BackColor
+                    Font = new Font("Calibri", 13F, FontStyle.Bold),                                    // Set the font
+                    Text = "Paste",                                                                     // Set the text to 'Paste'
+                    Location = new Point(x + rtbWidth + offset, topPosition + (rtbHeight - btnHeight)), // Set its location in the panel
+                    Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,                 // Ensure responsiveness
+                    Tag = false                                                                         // Denotes if pinned
+                };
+
+                // Create a new PictureBox for storing the pinned state
+                PictureBox pictureBox = new PictureBox
+                {
+                    Name = $"pb_{i}",
+                    Size = new Size(pbWidth, pbHeight),
+                    Location = new Point(x + rtbWidth + offset + tbWidth + offset, topPosition + (rtbHeight - btnHeight)),
+                    BackgroundImage = Properties.Resources.Pin_Unpinned_36,
+                    BackgroundImageLayout = ImageLayout.None,
+                    Tag = false
+                };
+
+                // Add controls to the panel
+                panel.Controls.Add(richTextBox);
+                panel.Controls.Add(textBox);
+                panel.Controls.Add(button);
+                panel.Controls.Add(pictureBox);
+
+                // Update the top position for the next RichTextBox
+                topPosition += richTextBox.Height + offset; // Add some spacing between controls
+            }
+        }
+
         private async void Form_clipboardManager_Shown(object sender, EventArgs e)
         {
             await Task.Delay(500);
@@ -118,8 +211,8 @@ namespace ClipboardManager
 
         private void Btn_smallToMedium_Click(object sender, EventArgs e)
         {
-            // Will grow the form to a larger size with more features.
-            throw new NotImplementedException();
+            // Change form size
+            SetFormSize(formSizeMedium);
         }
     }
 }

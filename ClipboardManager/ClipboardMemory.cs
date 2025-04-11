@@ -44,21 +44,21 @@ namespace ClipboardManager
             }
         }
 
-        private List<string> UpdateClipList()
+        private void UpdateClipList()
         {
-            List<string> clipLog = new List<string>();
+            clipList.Clear();
 
             int clipLogRowCount = GetClipLogRowCount();
             if (clipLogRowCount == 0)
             {
-                return clipLog;
+                return;
             }
 
             using (SQLiteConnection conn = new SQLiteConnection(connString))
             {
                 conn.Open();
 
-                string query = @"SELECT ClipText FROM ClipLog ORDER BY ClipOrder";
+                string query = @"SELECT ClipText FROM ClipLog ORDER BY ClipOrder DESC";
 
                 using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                 {
@@ -69,13 +69,12 @@ namespace ClipboardManager
                             string clipText = reader["ClipText"].ToString();
                             if (!string.IsNullOrEmpty(clipText))
                             {
-                                clipLog.Add(clipText);
+                                clipList.Add(clipText);
                             }
                         }
                     }
                 }
             }
-            return clipLog;
         }
 
         private int GetClipLogRowCount()

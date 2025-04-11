@@ -38,8 +38,12 @@
             this.btn_miniToMedium = new System.Windows.Forms.Button();
             this.pb_clipTypeBox = new System.Windows.Forms.PictureBox();
             this.pb_clipChangeBox = new System.Windows.Forms.PictureBox();
-            this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.gb_clipboard = new System.Windows.Forms.GroupBox();
+            this.panel = new System.Windows.Forms.Panel();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.gb_clipIndicator.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeFilteredText)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeText)).BeginInit();
@@ -50,6 +54,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipChangeBox)).BeginInit();
             this.gb_clipboard.SuspendLayout();
+            this.panel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // gb_clipIndicator
@@ -165,33 +171,78 @@
             this.pb_clipChangeBox.TabIndex = 0;
             this.pb_clipChangeBox.TabStop = false;
             // 
-            // flowLayoutPanel
-            // 
-            this.flowLayoutPanel.Font = new System.Drawing.Font("Calibri", 10F, System.Drawing.FontStyle.Bold);
-            this.flowLayoutPanel.Location = new System.Drawing.Point(0, 23);
-            this.flowLayoutPanel.Name = "flowLayoutPanel";
-            this.flowLayoutPanel.Size = new System.Drawing.Size(717, 388);
-            this.flowLayoutPanel.TabIndex = 1;
-            // 
             // gb_clipboard
             // 
             this.gb_clipboard.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.gb_clipboard.Controls.Add(this.flowLayoutPanel);
+            this.gb_clipboard.Controls.Add(this.panel);
             this.gb_clipboard.Font = new System.Drawing.Font("Calibri", 13F, System.Drawing.FontStyle.Bold);
             this.gb_clipboard.ForeColor = System.Drawing.Color.White;
             this.gb_clipboard.Location = new System.Drawing.Point(68, 0);
             this.gb_clipboard.Name = "gb_clipboard";
-            this.gb_clipboard.Size = new System.Drawing.Size(717, 411);
+            this.gb_clipboard.Size = new System.Drawing.Size(401, 673);
             this.gb_clipboard.TabIndex = 0;
             this.gb_clipboard.TabStop = false;
             this.gb_clipboard.Text = "Clipboard";
+            // 
+            // panel
+            // 
+            this.panel.Controls.Add(this.textBox1);
+            this.panel.Controls.Add(this.pictureBox1);
+            this.panel.Controls.Add(this.button1);
+            this.panel.Controls.Add(this.richTextBox1);
+            this.panel.Font = new System.Drawing.Font("Calibri", 13F);
+            this.panel.Location = new System.Drawing.Point(6, 23);
+            this.panel.Name = "panel";
+            this.panel.Size = new System.Drawing.Size(390, 647);
+            this.panel.TabIndex = 0;
+            // 
+            // textBox1
+            // 
+            this.textBox1.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.textBox1.Location = new System.Drawing.Point(273, 6);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(37, 29);
+            this.textBox1.TabIndex = 3;
+            this.textBox1.Text = "100";
+            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImage = global::ClipboardManager.Properties.Resources.Pin_Pinned_36;
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pictureBox1.Location = new System.Drawing.Point(354, 53);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(36, 36);
+            this.pictureBox1.TabIndex = 2;
+            this.pictureBox1.TabStop = false;
+            // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Calibri", 13F, System.Drawing.FontStyle.Bold);
+            this.button1.ForeColor = System.Drawing.Color.Black;
+            this.button1.Location = new System.Drawing.Point(273, 53);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 36);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "Paste";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Font = new System.Drawing.Font("Calibri", 12F);
+            this.richTextBox1.Location = new System.Drawing.Point(6, 6);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(261, 83);
+            this.richTextBox1.TabIndex = 0;
+            this.richTextBox1.Text = "WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW";
             // 
             // form_clipboardManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(784, 411);
+            this.ClientSize = new System.Drawing.Size(469, 671);
             this.Controls.Add(this.gb_clipboard);
             this.Controls.Add(this.gb_clipIndicator);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -210,6 +261,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipChangeBox)).EndInit();
             this.gb_clipboard.ResumeLayout(false);
+            this.panel.ResumeLayout(false);
+            this.panel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -226,8 +280,12 @@
         private System.Windows.Forms.PictureBox pb_clipTypeBlank;
         private System.Windows.Forms.PictureBox pb_clipChangedIndicator;
         private System.Windows.Forms.PictureBox pb_clipTypeFilteredText;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel;
         private System.Windows.Forms.GroupBox gb_clipboard;
+        private System.Windows.Forms.Panel panel;
+        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 

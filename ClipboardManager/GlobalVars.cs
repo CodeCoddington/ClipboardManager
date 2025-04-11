@@ -38,8 +38,10 @@ namespace ClipboardManager
         // Lists
         private List<Control> typeIndicators = new List<Control>();
         private List<string> filterList = new List<string>();
+        private List<string> clipList = new List<string>();
 
         // Form sizes - will add more as we continue design.
         private Size formSizeMini = new Size(77, 228);
+        private Size formSizeMedium = new Size(485, 710);
     }
 }

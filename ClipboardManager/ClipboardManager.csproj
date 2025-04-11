@@ -177,6 +177,12 @@
   <ItemGroup>
     <None Include="Resources\Clipboard.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Pin_Unpinned_36.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Pin_Pinned_36.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
