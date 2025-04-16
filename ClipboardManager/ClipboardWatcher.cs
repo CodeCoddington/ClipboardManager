@@ -50,7 +50,7 @@ namespace ClipboardManager
                     clipIsNullOrBlank = true;
                 }
             }
-            else if (Clipboard.GetDataObject() != null)
+            else if (ClipboardContainsNonTextData())
             {
                 currClipType = CLIP_TYPE_NONTEXT;
                 currClipText = null;
@@ -62,6 +62,26 @@ namespace ClipboardManager
                 currClipText = string.Empty;
                 clipIsNullOrBlank = true;
             }
+        }
+
+        private bool ClipboardContainsNonTextData()
+        {
+            // Check for standard text data formats
+            if (Clipboard.ContainsData(DataFormats.Text) || Clipboard.ContainsData(DataFormats.UnicodeText))
+            {
+                return false; // Only text is present
+            }
+
+            // Check for other data formats
+            foreach (string format in Clipboard.GetDataObject().GetFormats())
+            {
+                if (format != DataFormats.Text && format != DataFormats.UnicodeText)
+                {
+                    return true; // Found non-text data
+                }
+            }
+
+            return false; // No non-text data found
         }
 
         private void CheckClipChange()
@@ -141,6 +161,9 @@ namespace ClipboardManager
                     {
                         await DeleteOldestRecordAsync();
                     }
+
+                    UpdateClipLists();
+                    RefreshPanel();
                 }
                 else
                 {

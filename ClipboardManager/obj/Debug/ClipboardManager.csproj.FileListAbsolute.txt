@@ -21,3 +21,5 @@ G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\Cli
 G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\ClipboardManager\bin\Debug\System.Data.SQLite.xml
 G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\ClipboardManager\obj\Debug\ClipboardManager.form_clipboardManager.resources
 G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\ClipboardManager\obj\Debug\Clipboar.2FE11BDD.Up2Date
+G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\ClipboardManager\bin\Debug\WindowsInput.dll
+G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\ClipboardManager\bin\Debug\WindowsInput.xml

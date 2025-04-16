@@ -25,6 +25,8 @@ namespace ClipboardManager
         private const string SQL_ERR_REORDER = "SQL_ERR_REORDER";
         private const string SQL_ERR_ADD = "SQL_ERR_ADD";
         private const string SQL_ERR_DELETE = "SQL_ERR_DELETE";
+        private const string SQL_ERR_FLIPPIN = "SQL_ERR_FLIPPIN";
+        private const string SQL_ERR_CLEAN = "SLQ_ERR_CLEAN";
 
         // Text
         private string lastClipText;
@@ -38,8 +40,7 @@ namespace ClipboardManager
         // Lists
         private List<Control> typeIndicators = new List<Control>();
         private List<string> filterList = new List<string>();
-        private List<string> unpinnedClipList = new List<string>();
-        private List<string> pinnedClipList = new List<string>();
+        private List<(string, bool)> clipList = new List<(string, bool)>();
 
         // Form sizes - will add more as we continue design.
         private Size formSizeMini = new Size(77, 228);

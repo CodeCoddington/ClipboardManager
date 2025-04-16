@@ -14,14 +14,14 @@
     <framework targetVersion="4.8" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="ClipboardManager.exe.manifest" size="7490">
+    <dependentAssembly dependencyType="install" codebase="ClipboardManager.exe.manifest" size="8565">
       <assemblyIdentity name="ClipboardManager.exe" version="1.0.0.1" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="amd64" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>BsngS2WSqsNk6PQI23y1adEO8c425jwfL7OZ80D1TnI=</dsig:DigestValue>
+        <dsig:DigestValue>LP0BY6+H9Ry+eDGSZQJVCaTM9z1obenz37TZmehIo1c=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

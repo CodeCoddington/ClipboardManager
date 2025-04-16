@@ -60,10 +60,9 @@ namespace ClipboardManager
             }
         }
 
-        private void InitializeClipLists()
+        private void UpdateClipLists()
         {
-            unpinnedClipList.Clear();
-            pinnedClipList.Clear();
+            clipList.Clear();
 
             int clipLogRowCount = GetClipLogRowCount();
             if (clipLogRowCount == 0)
@@ -86,13 +85,13 @@ namespace ClipboardManager
                             string clipText = reader["ClipText"].ToString();
                             if (!string.IsNullOrEmpty(clipText))
                             {
-                                pinnedClipList.Add(clipText);
+                                clipList.Add((clipText, true));
                             }
                         }
                     }
                 }
 
-                query = @"SELECT ClipText FROM ClipLog ORDER BY UnpinnedClipOrder DESC";
+                query = @"SELECT ClipText FROM ClipLog WHERE Pinned = 0 ORDER BY UnpinnedClipOrder DESC";
 
                 using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                 {
@@ -103,7 +102,7 @@ namespace ClipboardManager
                             string clipText = reader["ClipText"].ToString();
                             if (!string.IsNullOrEmpty(clipText))
                             {
-                                unpinnedClipList.Add(clipText);
+                                clipList.Add((clipText, false));
                             }
                         }
                     }
@@ -390,6 +389,180 @@ namespace ClipboardManager
                         return SQL_ERR_DELETE;
                     }
                 }
+            }
+        }
+
+        private async Task<string> FlipPinnedStatus(bool pinned, string clipText)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connString))
+            {
+                await conn.OpenAsync(); // Ensure the connection is opened asynchronously
+
+                using (SQLiteTransaction transaction = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        if (pinned)
+                        {
+                            // Calculate the new pinned order
+                            int newOrder = -1;
+
+                            string query = "SELECT MIN(PinnedClipOrder) FROM ClipLog";
+
+                            using (SQLiteCommand cmdNewIndex = new SQLiteCommand(query, conn, transaction))
+                            {
+                                object result = await cmdNewIndex.ExecuteScalarAsync();
+                                if (result != DBNull.Value && result != null)
+                                {
+                                    // Parse the result to an integer
+                                    newOrder = int.TryParse(result.ToString(), out int n) ? n - 1 : -1;
+                                }
+                                else
+                                {
+                                    // If no rows exist, set the new order to -1
+                                    newOrder = -1;
+                                }
+                            }
+
+                            // Update the pinned status and order
+                            query = "UPDATE ClipLog SET Pinned = 1, PinnedClipOrder = @PinnedClipOrder WHERE ClipText = @ClipText";
+
+                            using (SQLiteCommand cmdUpdate = new SQLiteCommand(query, conn, transaction))
+                            {
+                                cmdUpdate.Parameters.AddWithValue("@PinnedClipOrder", newOrder);
+                                cmdUpdate.Parameters.AddWithValue("@ClipText", clipText);
+
+                                await cmdUpdate.ExecuteNonQueryAsync();
+                            }
+                        }
+                        else
+                        {
+                            // Unpin the clip
+                            string query = "UPDATE ClipLog SET Pinned = 0, PinnedClipOrder = NULL WHERE ClipText = @ClipText";
+
+                            using (SQLiteCommand cmdUnpin = new SQLiteCommand(query, conn, transaction))
+                            {
+                                cmdUnpin.Parameters.AddWithValue("@ClipText", clipText);
+                                await cmdUnpin.ExecuteNonQueryAsync();
+                            }
+                        }
+
+                        // Commit the transaction
+                        transaction.Commit();
+
+                        return SQL_SUCCESS;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Rollback in case of an error
+                        transaction.Rollback();
+                        Console.WriteLine("Failed to pin or unpin. Msg: " + ex.Message);
+                        return SQL_ERR_FLIPPIN;
+                    }
+                }
+            }
+        }
+
+        private async Task<string> CleanClipOrdersAsync()
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connString))
+            {
+                await conn.OpenAsync(); // Explicitly open the connection
+
+                using (SQLiteTransaction transaction = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // Start with positive (unpinned)
+                        string query = "SELECT UnpinnedClipOrder FROM ClipLog WHERE UnpinnedClipOrder IS NOT NULL ORDER BY UnpinnedClipOrder ASC";
+
+                        using (SQLiteCommand unpinnedReadCmd = new SQLiteCommand(query, conn, transaction))
+                        {
+                            using (SQLiteDataReader reader = (SQLiteDataReader)await unpinnedReadCmd.ExecuteReaderAsync())
+                            {
+                                int newUnpinnedOrder = 1;
+                                while (await reader.ReadAsync())
+                                {
+                                    int currentUnpinnedOrder = reader["UnpinnedClipOrder"] != DBNull.Value
+                                        ? Convert.ToInt32(reader["UnpinnedClipOrder"])
+                                        : 0;
+
+                                    if (currentUnpinnedOrder != newUnpinnedOrder)
+                                    {
+                                        await UpdateUnpinnedClipOrderAsync(conn, transaction, currentUnpinnedOrder, newUnpinnedOrder);
+                                    }
+
+                                    // Increment order
+                                    newUnpinnedOrder++;
+                                }
+                            }
+                        }
+
+                        // Then, clean negative (pinned)
+                        query = "SELECT PinnedClipOrder FROM ClipLog WHERE PinnedClipOrder IS NOT NULL ORDER BY PinnedClipOrder DESC";
+
+                        using (SQLiteCommand pinnedReadCmd = new SQLiteCommand(query, conn, transaction))
+                        {
+                            using (SQLiteDataReader reader = (SQLiteDataReader)await pinnedReadCmd.ExecuteReaderAsync())
+                            {
+                                int newPinnedOrder = -1;
+                                while (await reader.ReadAsync())
+                                {
+                                    int currentPinnedOrder = reader["PinnedClipOrder"] != DBNull.Value
+                                        ? Convert.ToInt32(reader["PinnedClipOrder"])
+                                        : 0;
+
+                                    if (currentPinnedOrder != newPinnedOrder)
+                                    {
+                                        await UpdatePinnedClipOrderAsync(conn, transaction, currentPinnedOrder, newPinnedOrder);
+                                    }
+
+                                    // Decrement order
+                                    newPinnedOrder--;
+                                }
+                            }
+                        }
+
+                        // Commit transaction
+                        transaction.Commit();
+
+                        // Return success
+                        return SQL_SUCCESS;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Rollback transaction in case of error
+                        transaction.Rollback();
+                        Console.WriteLine($"Clean error: {ex.Message}\nStack Trace: {ex.StackTrace}");
+                        return SQL_ERR_CLEAN;
+                    }
+                }
+            }
+        }
+
+        private async Task UpdateUnpinnedClipOrderAsync(SQLiteConnection conn, SQLiteTransaction transaction, int currentUnpinnedOrder, int newUnpinnedOrder)
+        {
+            string query = "UPDATE ClipLog SET UnpinnedClipOrder = @NewClipOrder WHERE UnpinnedClipOrder = @UnpinnedClipOrder";
+
+            using (SQLiteCommand updateCmd = new SQLiteCommand(query, conn, transaction))
+            {
+                updateCmd.Parameters.AddWithValue("@UnpinnedClipOrder", currentUnpinnedOrder);
+                updateCmd.Parameters.AddWithValue("@NewClipOrder", newUnpinnedOrder);
+
+                await updateCmd.ExecuteNonQueryAsync();
+            }
+        }
+
+        private async Task UpdatePinnedClipOrderAsync(SQLiteConnection conn, SQLiteTransaction transaction, int currentPinnedOrder, int newPinnedOrder)
+        {
+            string query = "UPDATE ClipLog SET PinnedClipOrder = @NewClipOrder WHERE PinnedClipOrder = @PinnedClipOrder";
+
+            using (SQLiteCommand updateCmd = new SQLiteCommand(query, conn, transaction))
+            {
+                updateCmd.Parameters.AddWithValue("@PinnedClipOrder", currentPinnedOrder);
+                updateCmd.Parameters.AddWithValue("@NewClipOrder", newPinnedOrder);
+
+                await updateCmd.ExecuteNonQueryAsync();
             }
         }
     }

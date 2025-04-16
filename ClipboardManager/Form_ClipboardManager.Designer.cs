@@ -34,22 +34,24 @@
             this.pb_clipTypeNonText = new System.Windows.Forms.PictureBox();
             this.pb_clipTypeBlank = new System.Windows.Forms.PictureBox();
             this.pb_clipChangedIndicator = new System.Windows.Forms.PictureBox();
-            this.pb_sizeChange_buttonFace = new System.Windows.Forms.PictureBox();
-            this.btn_changeFormSize = new System.Windows.Forms.Button();
             this.pb_clipTypeBox = new System.Windows.Forms.PictureBox();
             this.pb_clipChangeBox = new System.Windows.Forms.PictureBox();
+            this.pb_sizeChange_buttonFace = new System.Windows.Forms.PictureBox();
+            this.btn_changeFormSize = new System.Windows.Forms.Button();
             this.gb_clipboard = new System.Windows.Forms.GroupBox();
             this.panel = new System.Windows.Forms.Panel();
+            this.tb_hiddenCommandBox = new System.Windows.Forms.TextBox();
             this.gb_clipIndicator.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeFilteredText)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeText)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeNonText)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeBlank)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipChangedIndicator)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pb_sizeChange_buttonFace)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipChangeBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_sizeChange_buttonFace)).BeginInit();
             this.gb_clipboard.SuspendLayout();
+            this.panel.SuspendLayout();
             this.SuspendLayout();
             // 
             // gb_clipIndicator
@@ -123,6 +125,26 @@
             this.pb_clipChangedIndicator.TabIndex = 3;
             this.pb_clipChangedIndicator.TabStop = false;
             // 
+            // pb_clipTypeBox
+            // 
+            this.pb_clipTypeBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pb_clipTypeBox.Image = global::ClipboardManager.Properties.Resources.ControlBox_Only2;
+            this.pb_clipTypeBox.Location = new System.Drawing.Point(4, 78);
+            this.pb_clipTypeBox.Name = "pb_clipTypeBox";
+            this.pb_clipTypeBox.Size = new System.Drawing.Size(53, 53);
+            this.pb_clipTypeBox.TabIndex = 0;
+            this.pb_clipTypeBox.TabStop = false;
+            // 
+            // pb_clipChangeBox
+            // 
+            this.pb_clipChangeBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pb_clipChangeBox.Image = global::ClipboardManager.Properties.Resources.ControlBox_Only2;
+            this.pb_clipChangeBox.Location = new System.Drawing.Point(4, 23);
+            this.pb_clipChangeBox.Name = "pb_clipChangeBox";
+            this.pb_clipChangeBox.Size = new System.Drawing.Size(53, 53);
+            this.pb_clipChangeBox.TabIndex = 0;
+            this.pb_clipChangeBox.TabStop = false;
+            // 
             // pb_sizeChange_buttonFace
             // 
             this.pb_sizeChange_buttonFace.BackColor = System.Drawing.SystemColors.Control;
@@ -144,26 +166,6 @@
             this.btn_changeFormSize.TabIndex = 1;
             this.btn_changeFormSize.UseVisualStyleBackColor = false;
             // 
-            // pb_clipTypeBox
-            // 
-            this.pb_clipTypeBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pb_clipTypeBox.Image = global::ClipboardManager.Properties.Resources.ControlBox_Only2;
-            this.pb_clipTypeBox.Location = new System.Drawing.Point(4, 78);
-            this.pb_clipTypeBox.Name = "pb_clipTypeBox";
-            this.pb_clipTypeBox.Size = new System.Drawing.Size(53, 53);
-            this.pb_clipTypeBox.TabIndex = 0;
-            this.pb_clipTypeBox.TabStop = false;
-            // 
-            // pb_clipChangeBox
-            // 
-            this.pb_clipChangeBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pb_clipChangeBox.Image = global::ClipboardManager.Properties.Resources.ControlBox_Only2;
-            this.pb_clipChangeBox.Location = new System.Drawing.Point(4, 23);
-            this.pb_clipChangeBox.Name = "pb_clipChangeBox";
-            this.pb_clipChangeBox.Size = new System.Drawing.Size(53, 53);
-            this.pb_clipChangeBox.TabIndex = 0;
-            this.pb_clipChangeBox.TabStop = false;
-            // 
             // gb_clipboard
             // 
             this.gb_clipboard.BackColor = System.Drawing.SystemColors.ControlDarkDark;
@@ -179,11 +181,21 @@
             // 
             // panel
             // 
+            this.panel.AutoScroll = true;
+            this.panel.Controls.Add(this.tb_hiddenCommandBox);
             this.panel.Font = new System.Drawing.Font("Calibri", 13F);
             this.panel.Location = new System.Drawing.Point(6, 23);
             this.panel.Name = "panel";
             this.panel.Size = new System.Drawing.Size(404, 647);
             this.panel.TabIndex = 0;
+            // 
+            // tb_hiddenCommandBox
+            // 
+            this.tb_hiddenCommandBox.BackColor = System.Drawing.SystemColors.Window;
+            this.tb_hiddenCommandBox.Location = new System.Drawing.Point(3, 6);
+            this.tb_hiddenCommandBox.Name = "tb_hiddenCommandBox";
+            this.tb_hiddenCommandBox.Size = new System.Drawing.Size(395, 29);
+            this.tb_hiddenCommandBox.TabIndex = 1;
             // 
             // form_clipboardManager
             // 
@@ -198,6 +210,7 @@
             this.MaximumSize = new System.Drawing.Size(1920, 1080);
             this.MinimizeBox = false;
             this.Name = "form_clipboardManager";
+            this.Text = "Clipboard Manager";
             this.TopMost = true;
             this.gb_clipIndicator.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeFilteredText)).EndInit();
@@ -205,10 +218,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeNonText)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeBlank)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipChangedIndicator)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pb_sizeChange_buttonFace)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipTypeBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipChangeBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pb_sizeChange_buttonFace)).EndInit();
             this.gb_clipboard.ResumeLayout(false);
+            this.panel.ResumeLayout(false);
+            this.panel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -227,6 +242,7 @@
         private System.Windows.Forms.PictureBox pb_clipTypeFilteredText;
         private System.Windows.Forms.GroupBox gb_clipboard;
         private System.Windows.Forms.Panel panel;
+        private System.Windows.Forms.TextBox tb_hiddenCommandBox;
     }
 }
 
