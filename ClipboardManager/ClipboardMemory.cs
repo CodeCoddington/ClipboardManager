@@ -565,5 +565,46 @@ namespace ClipboardManager
                 await updateCmd.ExecuteNonQueryAsync();
             }
         }
+
+        private async Task<string> ClearAllClipLogDataAsync()
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connString))
+            {
+                await conn.OpenAsync();
+
+                using (SQLiteTransaction transaction = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // Delete all rows from ClipLog table
+                        string deleteQuery = "DELETE FROM ClipLog";
+                        using (SQLiteCommand deleteCmd = new SQLiteCommand(deleteQuery, conn, transaction))
+                        {
+                            await deleteCmd.ExecuteNonQueryAsync();
+                        }
+
+                        // Reset the auto-increment for the ClipLog table
+                        string resetAutoIncrementQuery = "UPDATE sqlite_sequence SET seq = 0 WHERE name = 'ClipLog'";
+                        using (SQLiteCommand resetCmd = new SQLiteCommand(resetAutoIncrementQuery, conn, transaction))
+                        {
+                            await resetCmd.ExecuteNonQueryAsync();
+                        }
+
+                        // Commit transaction
+                        transaction.Commit();
+
+                        // Return success
+                        return SQL_SUCCESS;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Rollback transaction in case of error
+                        transaction.Rollback();
+                        Console.WriteLine($"Clear error: {ex.Message}\nStack Trace: {ex.StackTrace}");
+                        return SQL_ERR_CLEAR;
+                    }
+                }
+            }
+        }
     }
 }

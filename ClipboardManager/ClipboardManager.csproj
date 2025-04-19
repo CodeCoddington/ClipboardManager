@@ -26,7 +26,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationRevision>5</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -73,6 +73,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Gma.System.MouseKeyHook, Version=5.7.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MouseKeyHook.5.7.1\lib\net48\Gma.System.MouseKeyHook.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -94,11 +97,11 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsInput, Version=1.0.4.0, Culture=neutral, PublicKeyToken=9b287f7dc5073cad, processorArchitecture=MSIL">
-      <HintPath>..\packages\InputSimulator.1.0.4.0\lib\net20\WindowsInput.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClipboardActions.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ClipboardMemory.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +114,7 @@
     <Compile Include="Form_ClipboardManager.Designer.cs">
       <DependentUpon>Form_ClipboardManager.cs</DependentUpon>
     </Compile>
+    <Compile Include="GlobalHook.cs" />
     <Compile Include="GlobalVars.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -188,6 +192,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\MediumToMini_Arrows_Mirrored_28x37.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OrthagonalArrow_BackColorTransparent_WithBox_23.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="SQLite.Interop.dll" />

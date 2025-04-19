@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
+using System.Drawing;
 
 namespace ClipboardManager
 {
@@ -16,7 +18,7 @@ namespace ClipboardManager
 
         private async Task MonitorClipboard()
         {
-            while (true)
+            while (ProcessExists("ClipboardManager_WindowWatcher"))
             {
                 await Task.Delay(250);
 
@@ -32,7 +34,7 @@ namespace ClipboardManager
                 RunFilterTest();
 
                 // Perform actions based on results
-                await ActionOnResultsAsync();
+                await UpdateIndicatorAsync();
 
                 // Update vars for next check
                 UpdateVarsForNextCheck();
@@ -45,7 +47,7 @@ namespace ClipboardManager
             {
                 currClipType = CLIP_TYPE_TEXT;
                 currClipText = Clipboard.GetText().TrimEnd(new char[] { '\r', '\n' });
-                if (currClipText == string.Empty)
+                if (string.IsNullOrEmpty(currClipText) || string.IsNullOrWhiteSpace(currClipText))
                 {
                     clipIsNullOrBlank = true;
                 }
@@ -101,80 +103,103 @@ namespace ClipboardManager
             }
         }
 
-        private async Task ActionOnResultsAsync()
+        private async Task UpdateIndicatorAsync()
         {
             if (clipChanged)
             {
+                // Toggle green clip indicator to show that clipboard has changed
+                await Toggle_pb_clipChangedIndicator();
+
                 // Set the correct indicator to show and then call method to show it.
-                Control indicator;
                 if (clipIsNullOrBlank)
                 {
-                    indicator = pb_clipTypeBlank; // Show type = Blank (White)
+                    pb_clipType.BackgroundImage = Properties.Resources.CircleIndicator_Blank; // Show type = Blank (White)
+                    clipHasValidText = false;
                 }
                 else if (!passedFilterTest)
                 {
-                    indicator = pb_clipTypeFilteredText; // Show type = Filtered (Red)
+                    pb_clipType.BackgroundImage = Properties.Resources.CircleIndicator_FilteredText; // Show type = Filtered (Red)
+                    clipHasValidText = false;
                 }
                 else if (currClipType == CLIP_TYPE_NONTEXT)
                 {
-                    indicator = pb_clipTypeNonText; // Show type = NonText (Blue with boat)
+                    pb_clipType.BackgroundImage = Properties.Resources.CircleIndicator_NonText; // Show type = NonText (Blue with boat)
+                    clipHasValidText = false;
                 }
                 else if (currClipType == CLIP_TYPE_TEXT)
                 {
-                    indicator = pb_clipTypeText; // Show type = Text (Grey with text)
-
-                    // Check SQL to see if clipText already exists in the database.
-                    int alreadyExistingClipOrder = await ReturnClipOrder_IfTextFoundAsync(currClipText);
-                    
-                    // If we found the text,
-                    if (alreadyExistingClipOrder != 0)
-                    {
-                        // Attempt to reorder
-                        string reorderResult = await ReorderClipLogAsync(alreadyExistingClipOrder);
-                        if (reorderResult == SQL_ERR_REORDER)
-                        {
-                            MessageBox.Show($"Reordering ClipLog failed.", "Reorder Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        }
-                    }
-                    // If we did NOT find the text,
-                    else
-                    {
-                        string addResult = await AddNewClipLogEntryAsync();
-                        if (addResult == SQL_ERR_ADD)
-                        {
-                            MessageBox.Show($"Adding to ClipLog failed.", "Insert Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        }
-                    }
-
-                    // Check to see if we have maxxed out the database
-                    int clipLogCount = await GetNumberOfUnpinnedRecordsAsync();
-                    if (clipLogCount < 0)
-                    {
-                        MessageBox.Show($"Getting ClipLog count failed.", "Count Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-
-                    // If we're maxxed, delete the oldest record (lowest ClipCount int)
-                    if (clipLogCount > maxUnpinnedRecords)
-                    {
-                        await DeleteOldestRecordAsync();
-                    }
-
-                    UpdateClipLists();
-                    RefreshPanel();
+                    pb_clipType.BackgroundImage = Properties.Resources.CircleIndicator_Text; // Show type = Text (Grey with text)
+                    clipHasValidText = true;
                 }
                 else
                 {
                     throw new InvalidOperationException($"Unexpected clipboard type: {currClipType}");
                 }
-
-                ShowClipTypeIndicator((PictureBox)indicator);
-
-                // Toggle green clip indicator to show that clipboard has changed
-                await Toggle_pb_clipChangedIndicator();
             }
+
+            // Check whether to run database and text tasks
+            await CheckConditionsToPerformTextActionsAsync();
+        }
+
+        private async Task CheckConditionsToPerformTextActionsAsync()
+        {
+            if (clipChanged || firstCycleAfterGrow)
+            {
+                // Then perform text functions if the form is the larger size
+                if (clipHasValidText && gb_clipboard.Visible)
+                {
+                    await DatabaseOperations_OnTextAsync();
+                }
+            }
+        }
+
+        private async Task DatabaseOperations_OnTextAsync()
+        {
+            // Check SQL to see if clipText already exists in the database.
+            int alreadyExistingClipOrder = await ReturnClipOrder_IfTextFoundAsync(currClipText);
+
+            // If we found the text,
+            if (alreadyExistingClipOrder != 0)
+            {
+                // Attempt to reorder
+                string reorderResult = await ReorderClipLogAsync(alreadyExistingClipOrder);
+                if (reorderResult == SQL_ERR_REORDER)
+                {
+                    MessageBox.Show($"Reordering ClipLog failed.", "Reorder Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.Close();
+                }
+            }
+            // If we did NOT find the text,
+            else
+            {
+                string addResult = await AddNewClipLogEntryAsync();
+                if (addResult == SQL_ERR_ADD)
+                {
+                    MessageBox.Show($"Adding to ClipLog failed.", "Insert Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.Close();
+                }
+            }
+
+            // Check to see if we have maxxed out the database
+            int clipLogCount = await GetNumberOfUnpinnedRecordsAsync();
+            if (clipLogCount < 0)
+            {
+                MessageBox.Show($"Getting ClipLog count failed.", "Count Failure", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // If we're maxxed, delete the oldest record (lowest ClipCount int)
+            if (clipLogCount > maxUnpinnedRecords)
+            {
+                string result = await DeleteOldestRecordAsync();
+                if (result == SQL_ERR_DELETE)
+                {
+                    MessageBox.Show("There was an issue deleting the oldest record from the database. Closing application.");
+                    this.Close();
+                }
+            }
+
+            RefreshForm();
         }
 
         private void UpdateVarsForNextCheck()
@@ -182,6 +207,7 @@ namespace ClipboardManager
             lastClipType = currClipType;
             lastClipText = currClipText;
             clipChanged = false;
+            firstCycleAfterGrow = false;
             passedFilterTest = false;
             clipIsNullOrBlank = false;
         }
