@@ -31,7 +31,7 @@ namespace ClipboardManager
         private void GlobalHookKeyDown(object sender, KeyEventArgs e)
         {
             // Check if the desired key combination is pressed (e.g., Ctrl + Shift + C)
-            if (e.Control && e.Shift && e.KeyCode == Keys.C)
+            if (e.Control && e.Shift && e.KeyCode == Keys.Q)
             {
                 // Raise the ShortcutPressed event
                 ShortcutPressed?.Invoke(this, EventArgs.Empty);

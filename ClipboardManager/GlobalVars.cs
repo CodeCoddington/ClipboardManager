@@ -49,7 +49,7 @@ namespace ClipboardManager
         private List<(string, bool)> clipList = new List<(string, bool)>();
 
         // Form sizes - will add more as we continue design.
-        private Size formSizeMini = new Size(130, 233);
+        private Size formSizeMini = new Size(180, 233);
         private Size formSizeMedium = new Size(575, 710);
 
         // Dynamic control vars

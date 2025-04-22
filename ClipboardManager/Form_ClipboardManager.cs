@@ -42,8 +42,8 @@ namespace ClipboardManager
             // Form
             this.Load += Form_clipboardManager_Load;
             this.Shown += Form_clipboardManager_Shown;
-            this.Activated += Form_clipboardManager_Activated;
-            this.Deactivate += Form_clipboardManager_Deactivate;
+            //this.Activated += Form_clipboardManager_Activated;
+            //this.Deactivate += Form_clipboardManager_Deactivate;
             this.FormClosing += Form_clipboardManager_FormClosing;
 
             // Buttons and related
@@ -57,7 +57,7 @@ namespace ClipboardManager
 
             // Actions
             btn_clearAll.Click += Btn_clearAll_Click;
-            btn_textMod_0.Click += StringModifier_Clicked;
+            
             btn_textMod_1.Click += StringModifier_Clicked;
             btn_textMod_2.Click += StringModifier_Clicked;
             btn_textMod_3.Click += StringModifier_Clicked;
@@ -65,6 +65,9 @@ namespace ClipboardManager
             btn_textMod_5.Click += StringModifier_Clicked;
             btn_textMod_6.Click += StringModifier_Clicked;
             btn_textMod_7.Click += StringModifier_Clicked;
+            btn_textMod_8.Click += StringModifier_Clicked;
+            btn_textMod_9.Click += StringModifier_Clicked;
+            btn_textMod_10.Click += StringModifier_Clicked;
         }
 
         private void InitializeGlobalVars()
@@ -77,6 +80,16 @@ namespace ClipboardManager
         }
 
         //---OVERRIDES---
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;  // Turn on WS_EX_COMPOSITED
+                return cp;
+            }
+        }
+
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             const int WM_KEYDOWN = 0x0100;

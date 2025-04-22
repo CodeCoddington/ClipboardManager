@@ -10,7 +10,7 @@ namespace ClipboardManager
 {
     public partial class form_clipboardManager : Form
     {
-        private static readonly string dbPath = @"G:\Public\Vince J\Programming\GitHub\Repos\ClipboardManager\ClipboardManager\SQLiteDb\ClipboardManager.db";
+        private static readonly string dbPath = @"C:\Users\VinceJ\Documents\Local Databases\Clipboard Manager\ClipboardManager.db";
 
         private static readonly string connString = $"DataSource={dbPath}";
 

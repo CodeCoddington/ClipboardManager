@@ -41,14 +41,16 @@
             this.tb_hiddenCommandBox = new System.Windows.Forms.TextBox();
             this.btn_clearAll = new System.Windows.Forms.Button();
             this.gb_actions = new System.Windows.Forms.GroupBox();
-            this.btn_textMod_0 = new System.Windows.Forms.Button();
-            this.btn_textMod_1 = new System.Windows.Forms.Button();
-            this.btn_textMod_2 = new System.Windows.Forms.Button();
-            this.btn_textMod_3 = new System.Windows.Forms.Button();
-            this.btn_textMod_4 = new System.Windows.Forms.Button();
-            this.btn_textMod_5 = new System.Windows.Forms.Button();
-            this.btn_textMod_6 = new System.Windows.Forms.Button();
             this.btn_textMod_7 = new System.Windows.Forms.Button();
+            this.btn_textMod_6 = new System.Windows.Forms.Button();
+            this.btn_textMod_5 = new System.Windows.Forms.Button();
+            this.btn_textMod_4 = new System.Windows.Forms.Button();
+            this.btn_textMod_3 = new System.Windows.Forms.Button();
+            this.btn_textMod_2 = new System.Windows.Forms.Button();
+            this.btn_textMod_1 = new System.Windows.Forms.Button();
+            this.btn_textMod_8 = new System.Windows.Forms.Button();
+            this.btn_textMod_9 = new System.Windows.Forms.Button();
+            this.btn_textMod_10 = new System.Windows.Forms.Button();
             this.gb_clipIndicator.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pb_clipType)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_orthogonalArrow)).BeginInit();
@@ -178,9 +180,9 @@
             // tb_hiddenCommandBox
             // 
             this.tb_hiddenCommandBox.BackColor = System.Drawing.SystemColors.Window;
-            this.tb_hiddenCommandBox.Location = new System.Drawing.Point(303, 6);
+            this.tb_hiddenCommandBox.Location = new System.Drawing.Point(228, 9);
             this.tb_hiddenCommandBox.Name = "tb_hiddenCommandBox";
-            this.tb_hiddenCommandBox.Size = new System.Drawing.Size(122, 29);
+            this.tb_hiddenCommandBox.Size = new System.Drawing.Size(149, 29);
             this.tb_hiddenCommandBox.TabIndex = 0;
             this.tb_hiddenCommandBox.TabStop = false;
             // 
@@ -200,6 +202,9 @@
             // gb_actions
             // 
             this.gb_actions.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
+            this.gb_actions.Controls.Add(this.btn_textMod_10);
+            this.gb_actions.Controls.Add(this.btn_textMod_9);
+            this.gb_actions.Controls.Add(this.btn_textMod_8);
             this.gb_actions.Controls.Add(this.btn_textMod_7);
             this.gb_actions.Controls.Add(this.btn_textMod_6);
             this.gb_actions.Controls.Add(this.btn_textMod_5);
@@ -207,7 +212,6 @@
             this.gb_actions.Controls.Add(this.btn_textMod_3);
             this.gb_actions.Controls.Add(this.btn_textMod_2);
             this.gb_actions.Controls.Add(this.btn_textMod_1);
-            this.gb_actions.Controls.Add(this.btn_textMod_0);
             this.gb_actions.Controls.Add(this.btn_clearAll);
             this.gb_actions.Font = new System.Drawing.Font("Calibri", 13F, System.Drawing.FontStyle.Bold);
             this.gb_actions.ForeColor = System.Drawing.Color.White;
@@ -218,90 +222,25 @@
             this.gb_actions.TabStop = false;
             this.gb_actions.Text = "Actions";
             // 
-            // btn_textMod_0
+            // btn_textMod_7
             // 
-            this.btn_textMod_0.BackColor = System.Drawing.Color.White;
-            this.btn_textMod_0.Font = new System.Drawing.Font("Calibri", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_textMod_0.ForeColor = System.Drawing.Color.Black;
-            this.btn_textMod_0.Location = new System.Drawing.Point(6, 68);
-            this.btn_textMod_0.Name = "btn_textMod_0";
-            this.btn_textMod_0.Size = new System.Drawing.Size(93, 34);
-            this.btn_textMod_0.TabIndex = 0;
-            this.btn_textMod_0.TabStop = false;
-            this.btn_textMod_0.Text = "text";
-            this.btn_textMod_0.UseVisualStyleBackColor = false;
-            // 
-            // btn_textMod_1
-            // 
-            this.btn_textMod_1.BackColor = System.Drawing.Color.White;
-            this.btn_textMod_1.Font = new System.Drawing.Font("Calibri", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_textMod_1.ForeColor = System.Drawing.Color.Black;
-            this.btn_textMod_1.Location = new System.Drawing.Point(6, 108);
-            this.btn_textMod_1.Name = "btn_textMod_1";
-            this.btn_textMod_1.Size = new System.Drawing.Size(93, 34);
-            this.btn_textMod_1.TabIndex = 0;
-            this.btn_textMod_1.TabStop = false;
-            this.btn_textMod_1.Text = "\"text\"";
-            this.btn_textMod_1.UseVisualStyleBackColor = false;
-            // 
-            // btn_textMod_2
-            // 
-            this.btn_textMod_2.BackColor = System.Drawing.Color.White;
-            this.btn_textMod_2.Font = new System.Drawing.Font("Calibri", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_textMod_2.ForeColor = System.Drawing.Color.Black;
-            this.btn_textMod_2.Location = new System.Drawing.Point(6, 148);
-            this.btn_textMod_2.Name = "btn_textMod_2";
-            this.btn_textMod_2.Size = new System.Drawing.Size(93, 34);
-            this.btn_textMod_2.TabIndex = 0;
-            this.btn_textMod_2.TabStop = false;
-            this.btn_textMod_2.Text = "(text)";
-            this.btn_textMod_2.UseVisualStyleBackColor = false;
-            // 
-            // btn_textMod_3
-            // 
-            this.btn_textMod_3.BackColor = System.Drawing.Color.White;
-            this.btn_textMod_3.Font = new System.Drawing.Font("Calibri", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_textMod_3.ForeColor = System.Drawing.Color.Black;
-            this.btn_textMod_3.Location = new System.Drawing.Point(6, 188);
-            this.btn_textMod_3.Name = "btn_textMod_3";
-            this.btn_textMod_3.Size = new System.Drawing.Size(93, 34);
-            this.btn_textMod_3.TabIndex = 0;
-            this.btn_textMod_3.TabStop = false;
-            this.btn_textMod_3.Text = "{text}";
-            this.btn_textMod_3.UseVisualStyleBackColor = false;
-            // 
-            // btn_textMod_4
-            // 
-            this.btn_textMod_4.BackColor = System.Drawing.Color.White;
-            this.btn_textMod_4.Font = new System.Drawing.Font("Calibri", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_textMod_4.ForeColor = System.Drawing.Color.Black;
-            this.btn_textMod_4.Location = new System.Drawing.Point(6, 228);
-            this.btn_textMod_4.Name = "btn_textMod_4";
-            this.btn_textMod_4.Size = new System.Drawing.Size(93, 34);
-            this.btn_textMod_4.TabIndex = 0;
-            this.btn_textMod_4.TabStop = false;
-            this.btn_textMod_4.Text = "[text]";
-            this.btn_textMod_4.UseVisualStyleBackColor = false;
-            // 
-            // btn_textMod_5
-            // 
-            this.btn_textMod_5.BackColor = System.Drawing.Color.White;
-            this.btn_textMod_5.Font = new System.Drawing.Font("Calibri", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_textMod_5.ForeColor = System.Drawing.Color.Black;
-            this.btn_textMod_5.Location = new System.Drawing.Point(6, 268);
-            this.btn_textMod_5.Name = "btn_textMod_5";
-            this.btn_textMod_5.Size = new System.Drawing.Size(93, 34);
-            this.btn_textMod_5.TabIndex = 0;
-            this.btn_textMod_5.TabStop = false;
-            this.btn_textMod_5.Text = "@text";
-            this.btn_textMod_5.UseVisualStyleBackColor = false;
+            this.btn_textMod_7.BackColor = System.Drawing.Color.White;
+            this.btn_textMod_7.Font = new System.Drawing.Font("Calibri", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_textMod_7.ForeColor = System.Drawing.Color.Black;
+            this.btn_textMod_7.Location = new System.Drawing.Point(6, 308);
+            this.btn_textMod_7.Name = "btn_textMod_7";
+            this.btn_textMod_7.Size = new System.Drawing.Size(93, 34);
+            this.btn_textMod_7.TabIndex = 0;
+            this.btn_textMod_7.TabStop = false;
+            this.btn_textMod_7.Text = "[R]text[R]";
+            this.btn_textMod_7.UseVisualStyleBackColor = false;
             // 
             // btn_textMod_6
             // 
             this.btn_textMod_6.BackColor = System.Drawing.Color.White;
             this.btn_textMod_6.Font = new System.Drawing.Font("Calibri", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_textMod_6.ForeColor = System.Drawing.Color.Black;
-            this.btn_textMod_6.Location = new System.Drawing.Point(6, 308);
+            this.btn_textMod_6.Location = new System.Drawing.Point(6, 268);
             this.btn_textMod_6.Name = "btn_textMod_6";
             this.btn_textMod_6.Size = new System.Drawing.Size(93, 34);
             this.btn_textMod_6.TabIndex = 0;
@@ -309,18 +248,109 @@
             this.btn_textMod_6.Text = "$text";
             this.btn_textMod_6.UseVisualStyleBackColor = false;
             // 
-            // btn_textMod_7
+            // btn_textMod_5
             // 
-            this.btn_textMod_7.BackColor = System.Drawing.Color.White;
-            this.btn_textMod_7.Font = new System.Drawing.Font("Calibri", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_textMod_7.ForeColor = System.Drawing.Color.Black;
-            this.btn_textMod_7.Location = new System.Drawing.Point(6, 348);
-            this.btn_textMod_7.Name = "btn_textMod_7";
-            this.btn_textMod_7.Size = new System.Drawing.Size(93, 34);
-            this.btn_textMod_7.TabIndex = 0;
-            this.btn_textMod_7.TabStop = false;
-            this.btn_textMod_7.Text = "[R]text[R]";
-            this.btn_textMod_7.UseVisualStyleBackColor = false;
+            this.btn_textMod_5.BackColor = System.Drawing.Color.White;
+            this.btn_textMod_5.Font = new System.Drawing.Font("Calibri", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_textMod_5.ForeColor = System.Drawing.Color.Black;
+            this.btn_textMod_5.Location = new System.Drawing.Point(6, 228);
+            this.btn_textMod_5.Name = "btn_textMod_5";
+            this.btn_textMod_5.Size = new System.Drawing.Size(93, 34);
+            this.btn_textMod_5.TabIndex = 0;
+            this.btn_textMod_5.TabStop = false;
+            this.btn_textMod_5.Text = "@text";
+            this.btn_textMod_5.UseVisualStyleBackColor = false;
+            // 
+            // btn_textMod_4
+            // 
+            this.btn_textMod_4.BackColor = System.Drawing.Color.White;
+            this.btn_textMod_4.Font = new System.Drawing.Font("Calibri", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_textMod_4.ForeColor = System.Drawing.Color.Black;
+            this.btn_textMod_4.Location = new System.Drawing.Point(6, 188);
+            this.btn_textMod_4.Name = "btn_textMod_4";
+            this.btn_textMod_4.Size = new System.Drawing.Size(93, 34);
+            this.btn_textMod_4.TabIndex = 0;
+            this.btn_textMod_4.TabStop = false;
+            this.btn_textMod_4.Text = "[text]";
+            this.btn_textMod_4.UseVisualStyleBackColor = false;
+            // 
+            // btn_textMod_3
+            // 
+            this.btn_textMod_3.BackColor = System.Drawing.Color.White;
+            this.btn_textMod_3.Font = new System.Drawing.Font("Calibri", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_textMod_3.ForeColor = System.Drawing.Color.Black;
+            this.btn_textMod_3.Location = new System.Drawing.Point(6, 148);
+            this.btn_textMod_3.Name = "btn_textMod_3";
+            this.btn_textMod_3.Size = new System.Drawing.Size(93, 34);
+            this.btn_textMod_3.TabIndex = 0;
+            this.btn_textMod_3.TabStop = false;
+            this.btn_textMod_3.Text = "{text}";
+            this.btn_textMod_3.UseVisualStyleBackColor = false;
+            // 
+            // btn_textMod_2
+            // 
+            this.btn_textMod_2.BackColor = System.Drawing.Color.White;
+            this.btn_textMod_2.Font = new System.Drawing.Font("Calibri", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_textMod_2.ForeColor = System.Drawing.Color.Black;
+            this.btn_textMod_2.Location = new System.Drawing.Point(6, 108);
+            this.btn_textMod_2.Name = "btn_textMod_2";
+            this.btn_textMod_2.Size = new System.Drawing.Size(93, 34);
+            this.btn_textMod_2.TabIndex = 0;
+            this.btn_textMod_2.TabStop = false;
+            this.btn_textMod_2.Text = "(text)";
+            this.btn_textMod_2.UseVisualStyleBackColor = false;
+            // 
+            // btn_textMod_1
+            // 
+            this.btn_textMod_1.BackColor = System.Drawing.Color.White;
+            this.btn_textMod_1.Font = new System.Drawing.Font("Calibri", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_textMod_1.ForeColor = System.Drawing.Color.Black;
+            this.btn_textMod_1.Location = new System.Drawing.Point(6, 68);
+            this.btn_textMod_1.Name = "btn_textMod_1";
+            this.btn_textMod_1.Size = new System.Drawing.Size(93, 34);
+            this.btn_textMod_1.TabIndex = 0;
+            this.btn_textMod_1.TabStop = false;
+            this.btn_textMod_1.Text = "\"text\"";
+            this.btn_textMod_1.UseVisualStyleBackColor = false;
+            // 
+            // btn_textMod_8
+            // 
+            this.btn_textMod_8.BackColor = System.Drawing.Color.White;
+            this.btn_textMod_8.Font = new System.Drawing.Font("Calibri", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_textMod_8.ForeColor = System.Drawing.Color.Black;
+            this.btn_textMod_8.Location = new System.Drawing.Point(6, 348);
+            this.btn_textMod_8.Name = "btn_textMod_8";
+            this.btn_textMod_8.Size = new System.Drawing.Size(93, 34);
+            this.btn_textMod_8.TabIndex = 0;
+            this.btn_textMod_8.TabStop = false;
+            this.btn_textMod_8.Text = "{ code }";
+            this.btn_textMod_8.UseVisualStyleBackColor = false;
+            // 
+            // btn_textMod_9
+            // 
+            this.btn_textMod_9.BackColor = System.Drawing.Color.White;
+            this.btn_textMod_9.Font = new System.Drawing.Font("Calibri", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_textMod_9.ForeColor = System.Drawing.Color.Black;
+            this.btn_textMod_9.Location = new System.Drawing.Point(6, 388);
+            this.btn_textMod_9.Name = "btn_textMod_9";
+            this.btn_textMod_9.Size = new System.Drawing.Size(93, 34);
+            this.btn_textMod_9.TabIndex = 0;
+            this.btn_textMod_9.TabStop = false;
+            this.btn_textMod_9.Text = "file>fldr";
+            this.btn_textMod_9.UseVisualStyleBackColor = false;
+            // 
+            // btn_textMod_10
+            // 
+            this.btn_textMod_10.BackColor = System.Drawing.Color.White;
+            this.btn_textMod_10.Font = new System.Drawing.Font("Calibri", 13F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_textMod_10.ForeColor = System.Drawing.Color.Black;
+            this.btn_textMod_10.Location = new System.Drawing.Point(6, 428);
+            this.btn_textMod_10.Name = "btn_textMod_10";
+            this.btn_textMod_10.Size = new System.Drawing.Size(93, 34);
+            this.btn_textMod_10.TabIndex = 0;
+            this.btn_textMod_10.TabStop = false;
+            this.btn_textMod_10.Text = "method()";
+            this.btn_textMod_10.UseVisualStyleBackColor = false;
             // 
             // form_clipboardManager
             // 
@@ -334,7 +364,6 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(1920, 1080);
-            this.MinimizeBox = false;
             this.Name = "form_clipboardManager";
             this.Text = "Clipboard Manager";
             this.TopMost = true;
@@ -368,7 +397,6 @@
         private System.Windows.Forms.PictureBox pb_orthogonalArrow;
         private System.Windows.Forms.Button btn_clearAll;
         private System.Windows.Forms.GroupBox gb_actions;
-        private System.Windows.Forms.Button btn_textMod_0;
         private System.Windows.Forms.Button btn_textMod_7;
         private System.Windows.Forms.Button btn_textMod_6;
         private System.Windows.Forms.Button btn_textMod_5;
@@ -376,6 +404,9 @@
         private System.Windows.Forms.Button btn_textMod_3;
         private System.Windows.Forms.Button btn_textMod_2;
         private System.Windows.Forms.Button btn_textMod_1;
+        private System.Windows.Forms.Button btn_textMod_8;
+        private System.Windows.Forms.Button btn_textMod_9;
+        private System.Windows.Forms.Button btn_textMod_10;
     }
 }
 
