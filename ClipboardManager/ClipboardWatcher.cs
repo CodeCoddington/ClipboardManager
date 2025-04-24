@@ -109,6 +109,7 @@ namespace ClipboardManager
             {
                 // Turn on clipChange indicator
                 Toggle_pb_clipChangedIndicatorOn();
+                await Task.Delay(500);
 
                 // Set the correct indicator to show and then call method to show it.
                 if (clipIsNullOrBlank)
