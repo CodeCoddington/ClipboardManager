@@ -256,11 +256,14 @@ namespace ClipboardManager
             }
         }
 
-        private async Task Toggle_pb_clipChangedIndicator()
+        private void Toggle_pb_clipChangedIndicatorOn()
         {
             pb_clipChangedIndicator.Visible = true;
             pb_orthogonalArrow.BackColor = Color.FromArgb(255, 0, 204, 0);
-            await Task.Delay(500);
+        }
+
+        private void Toggle_pb_clipChangedIndicatorOff()
+        {
             pb_clipChangedIndicator.Visible = false;
             pb_orthogonalArrow.BackColor = SystemColors.ControlDark;
         }

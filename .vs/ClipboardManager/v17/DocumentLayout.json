@@ -3,20 +3,24 @@
   "WorkspaceRootPath": "G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\clipboardmanager\\form_clipboardmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\clipboardmanager\\globalvars.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|solutionrelative:clipboardmanager\\globalvars.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\clipboardmanager\\clipboardwatcher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|solutionrelative:clipboardmanager\\clipboardwatcher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|g:\\public\\vince j\\programming\\github\\repos\\clipboardmanager\\clipboardmanager\\clipboardmanager\\form_clipboardmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|solutionrelative:clipboardmanager\\form_clipboardmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\clipboardmanager\\form_clipboardmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|g:\\public\\vince j\\programming\\github\\repos\\clipboardmanager\\clipboardmanager\\clipboardmanager\\form_clipboardmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|solutionrelative:clipboardmanager\\form_clipboardmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|g:\\public\\vince j\\programming\\github\\repos\\clipboardmanager\\clipboardmanager\\clipboardmanager\\clipboardactions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\clipboardmanager\\clipboardactions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|solutionrelative:clipboardmanager\\clipboardactions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\clipboardmanager\\globalvars.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|solutionrelative:clipboardmanager\\globalvars.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\clipboardmanager\\globalhook.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -25,10 +29,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\clipboardmanager\\clipboardmemory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|solutionrelative:clipboardmanager\\clipboardmemory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\clipboardmanager\\clipboardwatcher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{6B044D85-4BFF-4C81-ABD7-2ABF24259E43}|ClipboardManager\\ClipboardManager.csproj|solutionrelative:clipboardmanager\\clipboardwatcher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -42,7 +42,7 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "Form_ClipboardManager.cs [Design]",
               "DocumentMoniker": "G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\ClipboardManager\\Form_ClipboardManager.cs",
               "RelativeDocumentMoniker": "ClipboardManager\\Form_ClipboardManager.cs",
@@ -81,11 +81,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "GlobalVars.cs",
               "DocumentMoniker": "G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\ClipboardManager\\GlobalVars.cs",
               "RelativeDocumentMoniker": "ClipboardManager\\GlobalVars.cs",
@@ -99,13 +99,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "Form_ClipboardManager.cs",
               "DocumentMoniker": "G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\ClipboardManager\\Form_ClipboardManager.cs",
               "RelativeDocumentMoniker": "ClipboardManager\\Form_ClipboardManager.cs",
               "ToolTip": "G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\ClipboardManager\\Form_ClipboardManager.cs",
               "RelativeToolTip": "ClipboardManager\\Form_ClipboardManager.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEEAAAA6AAAAAAAAAA==",
+              "ViewState": "AgIAAMgAAAAAAAAAAAAgwAoBAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-31T11:49:36.666Z",
               "IsPinned": true,
@@ -113,20 +113,21 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 1,
               "Title": "ClipboardWatcher.cs",
               "DocumentMoniker": "G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\ClipboardManager\\ClipboardWatcher.cs",
               "RelativeDocumentMoniker": "ClipboardManager\\ClipboardWatcher.cs",
               "ToolTip": "G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\ClipboardManager\\ClipboardWatcher.cs",
               "RelativeToolTip": "ClipboardManager\\ClipboardWatcher.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAAAgwJMAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAACUAAAAAAAAAAAAgwJEAAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-01T21:10:19.26Z",
-              "IsPinned": true
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "ClipboardMemory.cs",
               "DocumentMoniker": "G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\ClipboardManager\\ClipboardMemory.cs",
               "RelativeDocumentMoniker": "ClipboardManager\\ClipboardMemory.cs",
@@ -134,25 +135,23 @@
               "RelativeToolTip": "ClipboardManager\\ClipboardMemory.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAACCAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-01T21:13:24.62Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ClipboardActions.cs",
-              "DocumentMoniker": "G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\ClipboardManager\\ClipboardActions.cs",
-              "RelativeDocumentMoniker": "ClipboardManager\\ClipboardActions.cs",
-              "ToolTip": "G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\ClipboardManager\\ClipboardActions.cs*",
-              "RelativeToolTip": "ClipboardManager\\ClipboardActions.cs*",
-              "ViewState": "AgIAAG8AAAAAAAAAAAAcwN8AAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-18T21:44:47.001Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-01T21:13:24.62Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
+              "Title": "ClipboardActions.cs",
+              "DocumentMoniker": "G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\ClipboardManager\\ClipboardActions.cs",
+              "RelativeDocumentMoniker": "ClipboardManager\\ClipboardActions.cs",
+              "ToolTip": "G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\ClipboardManager\\ClipboardActions.cs",
+              "RelativeToolTip": "ClipboardManager\\ClipboardActions.cs",
+              "ViewState": "AgIAAG8AAAAAAAAAAAAcwN8AAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-18T21:44:47.001Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "GlobalHook.cs",
               "DocumentMoniker": "G:\\Public\\Vince J\\Programming\\GitHub\\Repos\\ClipboardManager\\ClipboardManager\\ClipboardManager\\GlobalHook.cs",
               "RelativeDocumentMoniker": "ClipboardManager\\GlobalHook.cs",
@@ -160,8 +159,7 @@
               "RelativeToolTip": "ClipboardManager\\GlobalHook.cs",
               "ViewState": "AgIAAA8AAAAAAAAAAAAAACEAAAA7AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-18T23:20:36.942Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-18T23:20:36.942Z"
             }
           ]
         }

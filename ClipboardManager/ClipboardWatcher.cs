@@ -107,8 +107,8 @@ namespace ClipboardManager
         {
             if (clipChanged)
             {
-                // Toggle green clip indicator to show that clipboard has changed
-                await Toggle_pb_clipChangedIndicator();
+                // Turn on clipChange indicator
+                Toggle_pb_clipChangedIndicatorOn();
 
                 // Set the correct indicator to show and then call method to show it.
                 if (clipIsNullOrBlank)
@@ -139,6 +139,12 @@ namespace ClipboardManager
 
             // Check whether to run database and text tasks
             await CheckConditionsToPerformTextActionsAsync();
+
+            // Turn off clip change indicator if needed
+            if (pb_clipChangedIndicator.Visible == true)
+            {
+                Toggle_pb_clipChangedIndicatorOff();
+            }
         }
 
         private async Task CheckConditionsToPerformTextActionsAsync()

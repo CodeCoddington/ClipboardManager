@@ -22,7 +22,7 @@ namespace ClipboardManager
 
         // SQL
         // Values
-        private int maxUnpinnedRecords = 100;
+        private int maxUnpinnedRecords = 50;
 
         // Errors
         private const string SQL_SUCCESS = "SQL_SUCCESS";
